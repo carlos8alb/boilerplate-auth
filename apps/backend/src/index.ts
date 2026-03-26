@@ -5,7 +5,7 @@ import roleRoutes from "./routes/role.routes";
 import userRoutes from "./routes/user.routes";
 import { swaggerSpec, swaggerUi } from "./config/swagger";
 
-const app = express();
+const app: express.Application = express();
 
 app.use(express.json());
 

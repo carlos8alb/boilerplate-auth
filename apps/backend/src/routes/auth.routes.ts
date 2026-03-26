@@ -2,7 +2,7 @@ import { Router } from "express";
 import { authController } from "../controllers/auth.controller";
 import { authenticate } from "../middlewares/auth.middleware";
 
-const router = Router();
+const router: ReturnType<typeof Router> = Router();
 
 /**
  * @swagger
