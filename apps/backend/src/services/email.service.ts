@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 import { config } from "../config/env";
 
-const resend = new Resend(config.resend.apiKey);
+const resend = config.resend.apiKey ? new Resend(config.resend.apiKey) : null;
 
 export interface EmailOptions {
   to: string;
@@ -11,6 +11,11 @@ export interface EmailOptions {
 
 class EmailService {
   async sendEmail(options: EmailOptions): Promise<boolean> {
+    if (!resend) {
+      console.warn('Resend API key not configured. Email not sent.');
+      return false;
+    }
+
     try {
       const { to, subject, html } = options;
 
@@ -22,13 +27,14 @@ class EmailService {
       });
 
       return true;
-    } catch {
+    } catch (error) {
+      console.error('Error sending email:', error);
       return false;
     }
   }
 
   async sendVerificationEmail(email: string, token: string): Promise<boolean> {
-    const verificationUrl = `${process.env.FRONTEND_URL || "http://localhost:4200"}/verify-email?token=${token}`;
+    const verificationUrl = `${process.env.FRONTEND_URL || "http://localhost:4200"}/auth/verify-email?token=${token}`;
 
     return this.sendEmail({
       to: email,
@@ -43,7 +49,7 @@ class EmailService {
   }
 
   async sendPasswordResetEmail(email: string, token: string): Promise<boolean> {
-    const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:4200"}/reset-password?token=${token}`;
+    const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:4200"}/auth/reset-password?token=${token}`;
 
     return this.sendEmail({
       to: email,

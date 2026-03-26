@@ -24,6 +24,7 @@
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "bcryptjs": "^2.4.3",
+    "ecdsa-sig-formatter": "^1.0.11",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "resend": "^6.9.3",

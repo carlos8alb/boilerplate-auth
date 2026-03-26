@@ -8,9 +8,17 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspaces",
+    "dev:backend": "npm run dev -w @boilerplate-auth/backend",
+    "dev:frontend": "npm run start -w @boilerplate-auth/frontend",
     "build": "npm run build --workspaces",
+    "build:backend": "npm run build -w @boilerplate-auth/backend",
+    "build:frontend": "npm run build -w @boilerplate-auth/frontend",
     "lint": "npm run lint --workspaces",
-    "test": "npm run test --workspaces"
+    "lint:backend": "npm run lint -w @boilerplate-auth/backend",
+    "lint:frontend": "npm run lint -w @boilerplate-auth/frontend",
+    "test": "npm run test --workspaces",
+    "test:backend": "npm run test -w @boilerplate-auth/backend",
+    "test:frontend": "npm run test -w @boilerplate-auth/frontend"
   },
   "devDependencies": {
     "typescript": "^5.0.0"
