@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { config } from "./config/env";
 import authRoutes from "./routes/auth.routes";
 import roleRoutes from "./routes/role.routes";
@@ -10,6 +11,13 @@ async function startServer(): Promise<void> {
   await checkDatabaseConnection();
 
   const app: express.Application = express();
+
+  app.use(
+    cors({
+      origin: config.clientUrl,
+      credentials: true,
+    })
+  );
 
   app.use(express.json());
 
