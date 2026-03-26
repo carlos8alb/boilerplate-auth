@@ -4,23 +4,30 @@ import authRoutes from "./routes/auth.routes";
 import roleRoutes from "./routes/role.routes";
 import userRoutes from "./routes/user.routes";
 import { swaggerSpec, swaggerUi } from "./config/swagger";
+import { checkDatabaseConnection } from "./config/prisma";
 
-const app: express.Application = express();
+async function startServer(): Promise<void> {
+  await checkDatabaseConnection();
 
-app.use(express.json());
+  const app: express.Application = express();
 
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/roles", roleRoutes);
-app.use("/api/v1/users", userRoutes);
+  app.use(express.json());
 
-app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use("/api/v1/auth", authRoutes);
+  app.use("/api/v1/roles", roleRoutes);
+  app.use("/api/v1/users", userRoutes);
 
-app.get("/health", (_req, res) => {
-  res.json({ status: "ok" });
-});
+  app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.listen(config.port, () => {
-  console.log(`Server running on port ${config.port}`);
-});
+  app.get("/health", (_req, res) => {
+    res.json({ status: "ok" });
+  });
 
-export default app;
+  app.listen(config.port, () => {
+    console.log(`Server running on port ${config.port}`);
+  });
+}
+
+startServer();
+
+export default express();
