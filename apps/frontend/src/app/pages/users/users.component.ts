@@ -23,9 +23,9 @@ import { environment } from '../../../environments/environment';
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <div class="search-box">
-              <input 
-                type="text" 
-                class="form-control" 
+              <input
+                type="text"
+                class="form-control"
                 placeholder="Buscar usuarios..."
                 [(ngModel)]="searchTerm"
                 (input)="filterUsers()"
@@ -68,8 +68,8 @@ import { environment } from '../../../environments/environment';
                       </td>
                       <td>{{ user.email }}</td>
                       <td>
-                        <span class="badge" [class]="getRoleBadgeClass(user.role?.name)">
-                          {{ user.role?.name }}
+                        <span class="badge" [class]="getRoleBadgeClass(user?.role?.name)">
+                          {{ user?.role?.name }}
                         </span>
                       </td>
                       <td>
@@ -106,8 +106,8 @@ import { environment } from '../../../environments/environment';
           @if (pagination().pages > 1) {
             <div class="card-footer d-flex justify-content-between align-items-center">
               <span class="text-muted">
-                Mostrando {{ (pagination().page - 1) * pagination().pageSize + 1 }} - 
-                {{ Math.min(pagination().page * pagination().pageSize, pagination().total) }} 
+                Mostrando {{ (pagination().page - 1) * pagination().pageSize + 1 }} -
+                {{ Math.min(pagination().page * pagination().pageSize, pagination().total) }}
                 de {{ pagination().total }} usuarios
               </span>
               <nav>
@@ -220,7 +220,7 @@ export class UsersComponent implements OnInit {
   filteredUsers = signal<User[]>([]);
   searchTerm = '';
   roleFilter = '';
-  
+
   pagination = signal({
     page: 1,
     pageSize: 20,
@@ -249,19 +249,19 @@ export class UsersComponent implements OnInit {
 
   filterUsers(): void {
     let filtered = this.users();
-    
+
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
-      filtered = filtered.filter(u => 
-        u.email.toLowerCase().includes(term) || 
+      filtered = filtered.filter(u =>
+        u.email.toLowerCase().includes(term) ||
         u.fullName?.toLowerCase().includes(term)
       );
     }
-    
+
     if (this.roleFilter) {
       filtered = filtered.filter(u => u.role?.name === this.roleFilter);
     }
-    
+
     this.filteredUsers.set(filtered);
   }
 
