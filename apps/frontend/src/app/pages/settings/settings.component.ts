@@ -1,9 +1,9 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { ThemeService, ColorPalette, Theme } from '../../services/theme.service';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { LayoutComponent } from '../../components/layout/layout.component';
+import { AuthService } from '../../services/auth.service';
+import { ColorPalette, ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-settings',
