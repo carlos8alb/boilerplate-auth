@@ -4,70 +4,15 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.auth-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.bg-shape {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
-}
-
-.bg-shape-1 {
-  width: 400px;
-  height: 400px;
-  background: var(--accent-color);
-  top: -100px;
-  right: -100px;
-  animation: float 20s ease-in-out infinite;
-}
-
-.bg-shape-2 {
-  width: 300px;
-  height: 300px;
-  background: var(--primary-color);
-  bottom: -50px;
-  left: -50px;
-  animation: float 25s ease-in-out infinite reverse;
-}
-
-.bg-shape-3 {
-  width: 200px;
-  height: 200px;
-  background: var(--secondary-color);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: pulse 15s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(30px, 30px); }
-}
-
-@keyframes pulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; }
+  background: var(--body-bg);
 }
 
 .auth-card {
   background: var(--card-bg);
-  border-radius: 24px;
-  padding: 3rem;
+  border-radius: 12px;
+  padding: 2.5rem;
   width: 100%;
-  max-width: 440px;
-  box-shadow: var(--shadow-hover);
-  position: relative;
-  z-index: 1;
+  max-width: 400px;
   border: 1px solid var(--border-color);
 }
 
@@ -76,20 +21,20 @@
   margin-bottom: 2rem;
 
   h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     color: var(--text-color);
   }
 
   p {
     color: var(--text-muted);
-    font-size: 0.95rem;
+    font-size: 0.875rem;
   }
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .password-input {
@@ -102,7 +47,7 @@
 
 .toggle-password {
   position: absolute;
-  right: 1rem;
+  right: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -112,24 +57,23 @@
   padding: 0;
   display: flex;
   align-items: center;
-  transition: color 0.2s;
+  transition: color 0.15s;
 
   &:hover {
-    color: var(--accent-color);
+    color: var(--primary-color);
   }
 }
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .forgot-link {
-  color: var(--accent-color);
-  font-size: 0.9rem;
+  color: var(--primary-color);
+  font-size: 0.8125rem;
   text-decoration: none;
-  transition: opacity 0.2s;
 
   &:hover {
     opacity: 0.8;
@@ -138,18 +82,28 @@
 
 .invalid-feedback {
   color: var(--danger-color);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   margin-top: 0.25rem;
 }
 
 .alert-danger {
-  background: rgba(214, 48, 49, 0.1);
+  background: rgba(239, 68, 68, 0.1);
   border: 1px solid var(--danger-color);
   color: var(--danger-color);
-  border-radius: 10px;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
+  border-radius: 8px;
+  padding: 0.625rem 0.875rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.8125rem;
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid var(--success-color);
+  color: var(--success-color);
+  border-radius: 8px;
+  padding: 0.625rem 0.875rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.8125rem;
 }
 
 .w-100 {
@@ -158,16 +112,16 @@
 
 .auth-footer {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border-color);
 
   p {
     color: var(--text-muted);
-    font-size: 0.95rem;
+    font-size: 0.8125rem;
 
     a {
-      color: var(--accent-color);
+      color: var(--primary-color);
       text-decoration: none;
       font-weight: 500;
 
@@ -180,10 +134,10 @@
 
 @media (max-width: 480px) {
   .auth-card {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem;
   }
 
   .auth-header h1 {
-    font-size: 1.75rem;
+    font-size: 1.25rem;
   }
 }
