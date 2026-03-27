@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { LayoutComponent } from '../../components/layout/layout.component';
 import { AuthService } from '../../services/auth.service';
 import { ColorPalette, ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LayoutComponent],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'
 })
