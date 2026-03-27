@@ -1,0 +1,72 @@
+<div class="landing">
+  <nav class="navbar">
+    <div class="container">
+      <a class="logo" routerLink="/">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">AuthPro</span>
+      </a>
+      <div class="nav-links">
+        <a routerLink="/auth/login" class="btn btn-outline">Iniciar sesión</a>
+        <a routerLink="/auth/register" class="btn btn-primary">Registrarse</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content fade-in">
+        <h1>Gestión de autenticación <span class="highlight">simplificada</span></h1>
+        <p class="subtitle">Una solución moderna y segura para la autenticación de usuarios. Construida con las mejores prácticas de seguridad.</p>
+        <div class="hero-actions">
+          <a routerLink="/auth/register" class="btn btn-primary btn-lg">Comenzar gratis</a>
+          <a routerLink="/auth/login" class="btn btn-outline btn-lg">Ver demo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <h2>Características principales</h2>
+      <div class="features-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Seguridad avanzada</h3>
+          <p>Autenticación JWT con tokens de acceso y refresco. Rotación automática de tokens.</p>
+        </div>
+        <div class="feature-card fade-in" style="animation-delay: 0.1s;">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h3>Gestión de usuarios</h3>
+          <p>Sistema completo de registro, login, recuperación de contraseña y verificación de email.</p>
+        </div>
+        <div class="feature-card fade-in" style="animation-delay: 0.2s;">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </div>
+          <h3>Panel de administración</h3>
+          <p>Dashboard intuitivo con gestión de roles y permisos granulares.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <div class="cta-card">
+        <h2>¿Listo para comenzar?</h2>
+        <p>Únete a nuestra plataforma y disfruta de una autenticación segura y moderna.</p>
+        <a routerLink="/auth/register" class="btn btn-primary btn-lg">Crear cuenta gratuita</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 AuthPro. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+</div>

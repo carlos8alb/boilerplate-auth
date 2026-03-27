@@ -4,13 +4,11 @@ import { authGuard, guestGuard, adminGuard } from './guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
+    loadComponent: () => import('./pages/landing/landing.component').then(m => m.LandingComponent)
   },
   {
     path: 'auth',
-    loadChildren: () => import('./pages/auth/auth.routes').then(m => m.AUTH_ROUTES),
-    canActivate: [guestGuard]
+    loadChildren: () => import('./pages/auth/auth.routes').then(m => m.AUTH_ROUTES)
   },
   {
     path: 'dashboard',
@@ -29,6 +27,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'dashboard'
+    redirectTo: ''
   }
 ];

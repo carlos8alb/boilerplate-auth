@@ -1,0 +1,39 @@
+<div class="auth-container">
+  <div class="auth-bg">
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+  </div>
+
+  <div class="auth-card fade-in">
+    <div class="auth-header">
+      <div class="icon-wrapper" [class.success]="success()" [class.error]="error()">
+        @if (loading()) {
+          <div class="spinner-border text-primary"></div>
+        } @else if (success()) {
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        } @else if (error()) {
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        }
+      </div>
+
+      @if (loading()) {
+        <h1>Verificando...</h1>
+        <p>Por favor espera mientras verificamos tu correo</p>
+      } @else if (success()) {
+        <h1>¡Email verificado!</h1>
+        <p>Tu cuenta ha sido verificada correctamente</p>
+      } @else if (error()) {
+        <h1>Error de verificación</h1>
+        <p>{{ error() }}</p>
+      }
+    </div>
+
+    <div class="auth-actions">
+      @if (!loading()) {
+        <a routerLink="/auth/login" class="btn btn-primary w-100">
+          {{ success() ? 'Iniciar sesión' : 'Volver al login' }}
+        </a>
+      }
+    </div>
+  </div>
+</div>

@@ -28,6 +28,10 @@ export const AUTH_ROUTES: Routes = [
     canActivate: [guestGuard]
   },
   {
+    path: 'verify-email',
+    loadComponent: () => import('./verify-email/verify-email.component').then(m => m.VerifyEmailComponent)
+  },
+  {
     path: '**',
     redirectTo: 'login'
   }

@@ -1,0 +1,116 @@
+<div class="auth-container">
+  <div class="auth-bg">
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+    <div class="bg-shape bg-shape-3"></div>
+  </div>
+  
+  <div class="auth-card fade-in">
+    <div class="auth-header">
+      <h1 class="font-display">Crear cuenta</h1>
+      <p>Únete a nuestra plataforma</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="firstName" class="form-label">Nombre</label>
+            <input
+              type="text"
+              id="firstName"
+              class="form-control"
+              formControlName="firstName"
+              placeholder="Juan"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="lastName" class="form-label">Apellido</label>
+            <input
+              type="text"
+              id="lastName"
+              class="form-control"
+              formControlName="lastName"
+              placeholder="Pérez"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="tu@email.com"
+          [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        />
+        @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+          <div class="invalid-feedback">Por favor ingresa un correo válido</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="password-input">
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            id="password"
+            class="form-control"
+            formControlName="password"
+            placeholder="••••••••"
+            [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+          />
+          <button type="button" class="toggle-password" (click)="togglePassword()">
+            @if (showPassword()) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            }
+          </button>
+        </div>
+        @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+          <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          class="form-control"
+          formControlName="confirmPassword"
+          placeholder="••••••••"
+          [class.is-invalid]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+        />
+        @if (registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.value !== registerForm.get('password')?.value) {
+          <div class="invalid-feedback">Las contraseñas no coinciden</div>
+        }
+      </div>
+
+      @if (error()) {
+        <div class="alert alert-danger">{{ error() }}</div>
+      }
+
+      @if (success()) {
+        <div class="alert alert-success">{{ success() }}</div>
+      }
+
+      <button type="submit" class="btn btn-primary w-100" [disabled]="loading()">
+        @if (loading()) {
+          <span class="spinner-border spinner-border-sm me-2"></span>
+        }
+        Crear cuenta
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>¿Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesión</a></p>
+    </div>
+  </div>
+</div>

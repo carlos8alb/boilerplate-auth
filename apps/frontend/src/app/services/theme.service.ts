@@ -27,59 +27,59 @@ export class ThemeService {
 
   palettes: Record<ColorPalette, ThemeColors> = {
     default: {
-      primary: '#2d3436',
-      secondary: '#636e72',
-      accent: '#00b894',
-      success: '#00b894',
-      warning: '#fdcb6e',
-      danger: '#d63031',
-      info: '#0984e3',
-      light: '#dfe6e9',
-      dark: '#2d3436'
+      primary: '#4f46e5',
+      secondary: '#6366f1',
+      accent: '#06b6d4',
+      success: '#10b981',
+      warning: '#f59e0b',
+      danger: '#ef4444',
+      info: '#3b82f6',
+      light: '#e2e8f0',
+      dark: '#1e293b'
     },
     ocean: {
-      primary: '#0984e3',
-      secondary: '#74b9ff',
-      accent: '#00cec9',
-      success: '#00b894',
-      warning: '#ffeaa7',
-      danger: '#ff7675',
-      info: '#0984e3',
-      light: '#dfe6e9',
-      dark: '#2d3436'
+      primary: '#0284c7',
+      secondary: '#38bdf8',
+      accent: '#0891b2',
+      success: '#10b981',
+      warning: '#f59e0b',
+      danger: '#ef4444',
+      info: '#0284c7',
+      light: '#e2e8f0',
+      dark: '#1e293b'
     },
     sunset: {
-      primary: '#e17055',
-      secondary: '#fdcb6e',
-      accent: '#fd79a8',
-      success: '#00b894',
-      warning: '#fdcb6e',
-      danger: '#d63031',
-      info: '#74b9ff',
-      light: '#ffeaa7',
-      dark: '#2d3436'
+      primary: '#ea580c',
+      secondary: '#fb923c',
+      accent: '#db2777',
+      success: '#10b981',
+      warning: '#f59e0b',
+      danger: '#ef4444',
+      info: '#3b82f6',
+      light: '#e2e8f0',
+      dark: '#1e293b'
     },
     forest: {
-      primary: '#00b894',
-      secondary: '#55efc4',
-      accent: '#81ecec',
-      success: '#00b894',
-      warning: '#fdcb6e',
-      danger: '#ff7675',
-      info: '#00cec9',
-      light: '#dfe6e9',
-      dark: '#2d3436'
+      primary: '#059669',
+      secondary: '#34d399',
+      accent: '#0d9488',
+      success: '#059669',
+      warning: '#f59e0b',
+      danger: '#ef4444',
+      info: '#3b82f6',
+      light: '#e2e8f0',
+      dark: '#1e293b'
     },
     lavender: {
-      primary: '#6c5ce7',
-      secondary: '#a29bfe',
-      accent: '#fd79a8',
-      success: '#00b894',
-      warning: '#ffeaa7',
-      danger: '#ff7675',
-      info: '#74b9ff',
-      light: '#dfe6e9',
-      dark: '#2d3436'
+      primary: '#7c3aed',
+      secondary: '#a78bfa',
+      accent: '#c026d3',
+      success: '#10b981',
+      warning: '#f59e0b',
+      danger: '#ef4444',
+      info: '#3b82f6',
+      light: '#e2e8f0',
+      dark: '#1e293b'
     }
   };
 
@@ -108,7 +108,7 @@ export class ThemeService {
   private applyPalette(palette: ColorPalette): void {
     const colors = this.palettes[palette];
     const root = document.documentElement;
-    
+
     root.style.setProperty('--primary-color', colors.primary);
     root.style.setProperty('--secondary-color', colors.secondary);
     root.style.setProperty('--accent-color', colors.accent);

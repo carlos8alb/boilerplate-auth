@@ -1,0 +1,60 @@
+<div class="auth-container">
+  <div class="auth-bg">
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+    <div class="bg-shape bg-shape-3"></div>
+  </div>
+
+  <div class="auth-card fade-in">
+    <div class="auth-header">
+      <h1 class="font-display">Bienvenido</h1>
+      <p>Inicia sesión en tu cuenta</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <input type="email" id="email" class="form-control" formControlName="email" placeholder="tu@email.com" [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" />
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <div class="invalid-feedback">Por favor ingresa un correo válido</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="password-input">
+          <input [type]="showPassword() ? 'text' : 'password'" id="password" class="form-control" formControlName="password" placeholder="••••••••" [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
+          <button type="button" class="toggle-password" (click)="togglePassword()">
+            @if (showPassword()) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            }
+          </button>
+        </div>
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres</div>
+        }
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/auth/forgot-password" class="forgot-link">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      @if (error()) {
+        <div class="alert alert-danger">{{ error() }}</div>
+      }
+
+      <button type="submit" class="btn btn-primary w-100" [disabled]="loading()">
+        @if (loading()) {
+          <span class="spinner-border spinner-border-sm me-2"></span>
+        }
+        Iniciar sesión
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>¿No tienes cuenta? <a routerLink="/auth/register">Regístrate</a></p>
+    </div>
+  </div>
+</div>
