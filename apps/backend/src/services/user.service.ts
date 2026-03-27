@@ -50,6 +50,8 @@ class UserService {
         role: user.role,
         passwordHash: user.passwordHash,
         isEmailVerified: user.isEmailVerified,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       };
     } catch {
       return null;

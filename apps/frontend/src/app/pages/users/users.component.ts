@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../models/auth.model';
-import { environment } from '../../../environments/environment';
+import { API_URL } from '../../constants/api.constants';
 
 @Component({
   selector: 'app-users',
@@ -14,7 +14,6 @@ import { environment } from '../../../environments/environment';
 })
 export class UsersComponent implements OnInit {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/api/v1`;
 
   users = signal<User[]>([]);
   filteredUsers = signal<User[]>([]);
@@ -37,11 +36,20 @@ export class UsersComponent implements OnInit {
   }
 
   loadUsers(page = 1): void {
-    this.http.get<any>(`${this.apiUrl}/users?page=${page}&pageSize=20`).subscribe({
+    this.http.get<any>(`${API_URL}/users?page=${page}&pageSize=20`).subscribe({
       next: (res) => {
-        this.users.set(res.data);
+        this.users.set(res.data || []);
         this.filterUsers();
-        this.pagination.set(res.pagination);
+        if (res.pagination) {
+          this.pagination.set({
+            page: res.pagination.page,
+            pageSize: res.pagination.pageSize,
+            total: res.pagination.total,
+            pages: res.pagination.pages,
+            hasNextPage: res.pagination.page < res.pagination.pages,
+            hasPreviousPage: res.pagination.page > 1
+          });
+        }
       },
       error: (err) => console.error('Error loading users:', err)
     });
@@ -97,7 +105,7 @@ export class UsersComponent implements OnInit {
 
   confirmDelete(user: User): void {
     if (confirm(`¿Estás seguro de eliminar a ${user.email}?`)) {
-      this.http.delete(`${this.apiUrl}/users/${user.id}`).subscribe({
+      this.http.delete(`${API_URL}/users/${user.id}`).subscribe({
         next: () => this.loadUsers(),
         error: (err) => console.error('Error deleting user:', err)
       });

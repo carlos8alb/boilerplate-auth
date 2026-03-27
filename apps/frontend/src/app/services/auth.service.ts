@@ -12,13 +12,12 @@ import {
   ForgotPasswordRequest,
   ResetPasswordRequest
 } from '../models/auth.model';
-import { environment } from '../../environments/environment';
+import { API_URL } from '../constants/api.constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = `${environment.apiUrl}/api/v1`;
   private readonly ACCESS_TOKEN_KEY = 'access_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly USER_KEY = 'user';
@@ -37,7 +36,7 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/auth/login`, credentials)
+    return this.http.post<AuthResponse>(`${API_URL}/auth/login`, credentials)
       .pipe(
         tap(response => this.handleAuthSuccess(response)),
         catchError(error => {
@@ -48,7 +47,7 @@ export class AuthService {
   }
 
   register(data: RegisterRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/auth/register`, data)
+    return this.http.post<AuthResponse>(`${API_URL}/auth/register`, data)
       .pipe(
         tap(response => this.handleAuthSuccess(response)),
         catchError(error => {
@@ -60,7 +59,7 @@ export class AuthService {
 
   logout(): Observable<ApiResponse<null>> {
     const refreshToken = this.getRefreshToken();
-    return this.http.post<ApiResponse<null>>(`${this.API_URL}/auth/logout`, { refreshToken })
+    return this.http.post<ApiResponse<null>>(`${API_URL}/auth/logout`, { refreshToken })
       .pipe(
         tap(() => this.clearAuthData()),
         catchError(() => {
@@ -73,7 +72,7 @@ export class AuthService {
   refreshToken(): Observable<{ accessToken: string; refreshToken: string }> {
     const refreshToken = this.getRefreshToken();
     return this.http.post<{ accessToken: string; refreshToken: string }>(
-      `${this.API_URL}/auth/refresh`,
+      `${API_URL}/auth/refresh`,
       { refreshToken }
     ).pipe(
       tap(response => {
@@ -89,7 +88,7 @@ export class AuthService {
   }
 
   getCurrentUser(): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(`${this.API_URL}/auth/me`)
+    return this.http.get<ApiResponse<User>>(`${API_URL}/auth/me`)
       .pipe(
         tap(response => this.currentUser.set(response.data)),
         catchError(error => {
@@ -100,19 +99,19 @@ export class AuthService {
   }
 
   forgotPassword(data: ForgotPasswordRequest): Observable<ApiResponse<null>> {
-    return this.http.post<ApiResponse<null>>(`${this.API_URL}/auth/forgot-password`, data);
+    return this.http.post<ApiResponse<null>>(`${API_URL}/auth/forgot-password`, data);
   }
 
   resetPassword(data: ResetPasswordRequest): Observable<ApiResponse<null>> {
-    return this.http.post<ApiResponse<null>>(`${this.API_URL}/auth/reset-password`, data);
+    return this.http.post<ApiResponse<null>>(`${API_URL}/auth/reset-password`, data);
   }
 
   verifyEmail(token: string): Observable<ApiResponse<null>> {
-    return this.http.get<ApiResponse<null>>(`${this.API_URL}/auth/verify-email`, { params: { token } });
+    return this.http.get<ApiResponse<null>>(`${API_URL}/auth/verify-email`, { params: { token } });
   }
 
   resendVerification(email: string): Observable<ApiResponse<null>> {
-    return this.http.post<ApiResponse<null>>(`${this.API_URL}/auth/resend-verification`, { email });
+    return this.http.post<ApiResponse<null>>(`${API_URL}/auth/resend-verification`, { email });
   }
 
   getAccessToken(): string | null {
