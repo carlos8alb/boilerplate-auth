@@ -135,6 +135,12 @@ a {
   }
 }
 
+.form-control:disabled {
+  background-color: var(--body-bg);
+  color: var(--text-muted);
+  opacity: 1;
+}
+
 .form-label {
   font-weight: 500;
   font-size: 0.8125rem;
@@ -156,6 +162,10 @@ a {
     color: var(--text-muted);
     font-size: 0.875rem;
   }
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
 }
 
 .fade-in {
@@ -203,7 +213,7 @@ a {
     transition: background-color 0.1s ease;
 
     &:hover {
-      background-color: rgba(79, 70, 229, 0.03);
+      background-color: rgba(79, 70, 229, 0.05);
     }
   }
 }
@@ -221,15 +231,18 @@ a {
   box-shadow: var(--shadow-hover);
   padding: 0.25rem;
   min-width: 160px;
+  background: var(--card-bg);
 }
 
 .dropdown-item {
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
   font-size: 0.8125rem;
+  color: var(--text-color);
 
   &:hover {
     background-color: rgba(79, 70, 229, 0.08);
+    color: var(--text-color);
   }
 }
 

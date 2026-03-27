@@ -9,6 +9,16 @@
   .subtitle { color: var(--text-muted); }
 }
 
+.form-control:disabled {
+  background-color: var(--body-bg);
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
 .profile-card {
   .avatar-wrapper {
     position: relative;
@@ -39,8 +49,9 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
-    &:hover { background: var(--accent-color); color: white; }
+    color: var(--text-muted);
+    transition: all 0.15s;
+    &:hover { background: var(--primary-color); color: white; }
   }
   h4 { color: var(--text-color); font-weight: 600; }
 }
@@ -51,16 +62,17 @@
   padding: 0.5rem;
   .nav-link {
     border: none;
-    border-radius: 10px;
-    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    padding: 0.625rem 1rem;
     color: var(--text-muted);
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: all 0.2s;
+    transition: all 0.15s;
+    font-size: 0.875rem;
     &:hover { background: var(--body-bg); color: var(--text-color); }
-    &.active { background: var(--accent-color); color: white; }
+    &.active { background: var(--primary-color); color: white; }
   }
 }
 
@@ -82,9 +94,9 @@
   color: var(--text-muted);
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
-  &:hover { border-color: var(--accent-color); }
-  &.active { border-color: var(--accent-color); background: var(--accent-color); color: white; }
+  transition: all 0.15s;
+  &:hover { border-color: var(--primary-color); color: var(--text-color); }
+  &.active { border-color: var(--primary-color); background: var(--primary-color); color: white; }
 }
 
 .palette-grid {
@@ -103,9 +115,9 @@
   border-radius: 12px;
   background: var(--card-bg);
   cursor: pointer;
-  transition: all 0.2s;
-  &:hover { border-color: var(--accent-color); }
-  &.active { border-color: var(--accent-color); }
+  transition: all 0.15s;
+  &:hover { border-color: var(--primary-color); }
+  &.active { border-color: var(--primary-color); }
 }
 
 .palette-preview {

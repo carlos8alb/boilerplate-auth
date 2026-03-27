@@ -41,24 +41,24 @@
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  background: rgba(45, 52, 54, 0.1);
+  background: rgba(79, 70, 229, 0.1);
   color: var(--primary-color);
   display: flex;
   align-items: center;
   justify-content: center;
 
   &.accent {
-    background: rgba(0, 184, 148, 0.15);
+    background: rgba(6, 182, 212, 0.15);
     color: var(--accent-color);
   }
 
   &.warning {
-    background: rgba(253, 203, 110, 0.15);
+    background: rgba(245, 158, 11, 0.15);
     color: var(--warning-color);
   }
 
   &.info {
-    background: rgba(9, 132, 227, 0.15);
+    background: rgba(59, 130, 246, 0.15);
     color: var(--info-color);
   }
 }
