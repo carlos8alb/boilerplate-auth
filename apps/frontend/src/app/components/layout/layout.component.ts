@@ -16,10 +16,25 @@ export class LayoutComponent {
   themeService = inject(ThemeService);
 
   sidebarCollapsed = signal(false);
+  sidebarOpen = signal(false);
   userMenuOpen = signal(false);
 
   toggleSidebar(): void {
     this.sidebarCollapsed.update(v => !v);
+  }
+
+  openSidebar(): void {
+    this.sidebarOpen.set(true);
+  }
+
+  closeSidebar(): void {
+    this.sidebarOpen.set(false);
+  }
+
+  closeSidebarOnMobile(): void {
+    if (window.innerWidth <= 768) {
+      this.sidebarOpen.set(false);
+    }
   }
 
   toggleUserMenu(): void {
