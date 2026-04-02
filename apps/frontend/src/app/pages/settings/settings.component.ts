@@ -3,7 +3,8 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
-import { ColorPalette, ThemeService } from '../../services/theme.service';
+import { ThemeService } from '../../services/theme.service';
+import { ColorPalette } from '../../models/theme.model';
 import { API_URL } from '../../constants/api.constants';
 
 @Component({

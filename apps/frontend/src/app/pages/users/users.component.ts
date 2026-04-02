@@ -2,7 +2,7 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { User } from '../../models/auth.model';
+import { User, Role } from '../../models/auth.model';
 import { API_URL } from '../../constants/api.constants';
 
 @Component({
@@ -18,6 +18,7 @@ export class UsersComponent implements OnInit {
 
   users = signal<User[]>([]);
   filteredUsers = signal<User[]>([]);
+  roles = signal<Role[]>([]);
   searchTerm = '';
   roleFilter = '';
 
@@ -45,6 +46,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
+    this.loadRoles();
   }
 
   loadUsers(page = 1): void {
@@ -64,6 +66,15 @@ export class UsersComponent implements OnInit {
         }
       },
       error: (err) => console.error('Error loading users:', err)
+    });
+  }
+
+  loadRoles(): void {
+    this.http.get<any>(`${API_URL}/roles`).subscribe({
+      next: (res) => {
+        this.roles.set(res.data || []);
+      },
+      error: (err) => console.error('Error loading roles:', err)
     });
   }
 
@@ -120,6 +131,7 @@ export class UsersComponent implements OnInit {
       lastName: user.lastName || '',
       roleId: user.roleId
     });
+    document.body.classList.add('modal-open');
   }
 
   closeModal(): void {
@@ -127,6 +139,7 @@ export class UsersComponent implements OnInit {
     this.editForm.reset();
     this.editError.set('');
     this.editSuccess.set('');
+    document.body.classList.remove('modal-open');
   }
 
   saveUser(): void {
