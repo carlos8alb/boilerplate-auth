@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 export const LoginSchema = z.object({
-  email: z.string().email("El email es requerido y debe ser válido"),
+  email: z.email("El email es requerido y debe ser válido"),
   password: z.string().min(8, "La contraseña debe tener al menos 8 caracteres"),
 });
 
 export const RegisterSchema = z.object({
-  email: z.string().email("El email es requerido y debe ser válido"),
+  email: z.email("El email es requerido y debe ser válido"),
   password: z.string().min(8, "La contraseña debe tener al menos 8 caracteres"),
   firstName: z
     .string()
@@ -19,7 +19,7 @@ export const RegisterSchema = z.object({
 });
 
 export const ForgotPasswordSchema = z.object({
-  email: z.string().email("El email es requerido y debe ser válido"),
+  email: z.email("El email es requerido y debe ser válido"),
 });
 
 export const ResetPasswordSchema = z.object({
@@ -30,7 +30,7 @@ export const ResetPasswordSchema = z.object({
 });
 
 export const ResendVerificationSchema = z.object({
-  email: z.string().email("El email es requerido y debe ser válido"),
+  email: z.email("El email es requerido y debe ser válido"),
 });
 
 export const ChangePasswordSchema = z.object({
