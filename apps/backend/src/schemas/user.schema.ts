@@ -38,9 +38,26 @@ export const ChangePasswordSchema = z.object({
   newPassword: z.string().min(8, "La nueva contraseña debe tener al menos 8 caracteres"),
 });
 
+export const UpdateUserSchema = z.object({
+  firstName: z
+    .string()
+    .trim()
+    .min(1, "El nombre es requerido")
+    .max(100, "El nombre no puede exceder 100 caracteres")
+    .optional(),
+  lastName: z
+    .string()
+    .trim()
+    .min(1, "El apellido es requerido")
+    .max(100, "El apellido no puede exceder 100 caracteres")
+    .optional(),
+  roleId: z.string().uuid().optional(),
+});
+
 export type LoginInput = z.infer<typeof LoginSchema>;
 export type RegisterInput = z.infer<typeof RegisterSchema>;
 export type ForgotPasswordInput = z.infer<typeof ForgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof ResetPasswordSchema>;
 export type ResendVerificationInput = z.infer<typeof ResendVerificationSchema>;
 export type ChangePasswordInput = z.infer<typeof ChangePasswordSchema>;
+export type UpdateUserInput = z.infer<typeof UpdateUserSchema>;

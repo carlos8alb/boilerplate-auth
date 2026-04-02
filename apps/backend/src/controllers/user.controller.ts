@@ -4,12 +4,7 @@ import { HTTP_STATUS } from "../types/error.types";
 import { successResponse, errorResponse } from "../types/api-response.types";
 import { AuthRequest } from "../middlewares/auth.middleware";
 import { RoleName } from "@prisma/client";
-
-interface UpdateUserBody {
-  firstName?: string;
-  lastName?: string;
-  roleId?: string;
-}
+import { UpdateUserSchema } from "../schemas/user.schema";
 
 class UserController {
   async getAll(req: AuthRequest, res: Response): Promise<void> {
@@ -38,6 +33,25 @@ class UserController {
 
   async update(req: AuthRequest, res: Response): Promise<void> {
     try {
+      const result = UpdateUserSchema.safeParse(req.body);
+
+      if (!result.success) {
+        const errors = result.error.issues.map((issue) => ({
+          field: issue.path.join("."),
+          message: issue.message,
+        }));
+        res
+          .status(HTTP_STATUS.BAD_REQUEST)
+          .json(
+            errorResponse(
+              "ValidationError",
+              "La validación de la solicitud falló",
+              errors,
+            ),
+          );
+        return;
+      }
+
       const requestingUser = req.user as { userId: string; email: string };
       const currentUser = await userService.findById(requestingUser.userId);
 
@@ -49,7 +63,7 @@ class UserController {
       }
 
       const userIdToUpdate = req.params.id;
-      const body = req.body as UpdateUserBody;
+      const body = result.data;
 
       const canUpdate =
         currentUser.role?.name === RoleName.ADMIN ||

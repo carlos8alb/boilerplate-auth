@@ -30,8 +30,8 @@ export class SettingsComponent implements OnInit {
   passwordError = signal('');
 
   profileForm = this.fb.group({
-    firstName: [''],
-    lastName: [''],
+    firstName: ['', [Validators.required]],
+    lastName: ['', [Validators.required]],
     email: [{ value: '', disabled: true }]
   });
 
@@ -66,7 +66,10 @@ export class SettingsComponent implements OnInit {
   }
 
   saveProfile(): void {
-    if (this.profileForm.invalid) return;
+    if (this.profileForm.invalid) {
+      this.profileForm.markAllAsTouched();
+      return;
+    }
 
     const user = this.authService.currentUser();
     if (!user) return;

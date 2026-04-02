@@ -40,11 +40,17 @@
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label">Nombre</label>
-              <input type="text" class="form-control" formControlName="firstName" />
+              <input type="text" class="form-control" formControlName="firstName" [class.is-invalid]="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" />
+              @if (profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched) {
+                <div class="invalid-feedback">El nombre es requerido</div>
+              }
             </div>
             <div class="col-md-6">
               <label class="form-label">Apellido</label>
-              <input type="text" class="form-control" formControlName="lastName" />
+              <input type="text" class="form-control" formControlName="lastName" [class.is-invalid]="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" />
+              @if (profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched) {
+                <div class="invalid-feedback">El apellido es requerido</div>
+              }
             </div>
             <div class="col-12">
               <label class="form-label">Email</label>
