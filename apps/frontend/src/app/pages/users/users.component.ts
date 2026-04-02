@@ -100,7 +100,6 @@ export class UsersComponent implements OnInit {
   }
 
   editUser(user: User): void {
-    console.log('Edit user:', user);
   }
 
   confirmDelete(user: User): void {

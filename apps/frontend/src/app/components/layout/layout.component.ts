@@ -17,7 +17,7 @@ export class LayoutComponent {
 
   sidebarCollapsed = signal(false);
   sidebarOpen = signal(false);
-  userMenuOpen = signal(false);
+  dropdownOpen = signal(false);
 
   toggleSidebar(): void {
     this.sidebarCollapsed.update(v => !v);
@@ -37,8 +37,12 @@ export class LayoutComponent {
     }
   }
 
-  toggleUserMenu(): void {
-    this.userMenuOpen.update(v => !v);
+  toggleDropdown(): void {
+    this.dropdownOpen.update(v => !v);
+  }
+
+  closeDropdown(): void {
+    this.dropdownOpen.set(false);
   }
 
   getUserInitials(): string {
@@ -50,6 +54,7 @@ export class LayoutComponent {
   }
 
   logout(): void {
+    this.closeDropdown();
     this.authService.logout().subscribe();
   }
 }
