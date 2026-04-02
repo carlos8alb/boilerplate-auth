@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { ColorPalette, ThemeService } from '../../services/theme.service';
+import { API_URL } from '../../constants/api.constants';
 
 @Component({
   selector: 'app-settings',
@@ -15,9 +17,17 @@ export class SettingsComponent implements OnInit {
   authService = inject(AuthService);
   themeService = inject(ThemeService);
   private fb = inject(FormBuilder);
+  private http = inject(HttpClient);
 
-  activeTab = signal<'profile' | 'theme'>('profile');
-  saving = signal(false);
+  activeTab = signal<'profile' | 'password' | 'theme'>('profile');
+
+  savingProfile = signal(false);
+  profileSuccess = signal('');
+  profileError = signal('');
+
+  savingPassword = signal(false);
+  passwordSuccess = signal('');
+  passwordError = signal('');
 
   profileForm = this.fb.group({
     firstName: [''],
@@ -25,12 +35,18 @@ export class SettingsComponent implements OnInit {
     email: [{ value: '', disabled: true }]
   });
 
+  passwordForm = this.fb.group({
+    currentPassword: ['', [Validators.required]],
+    newPassword: ['', [Validators.required, Validators.minLength(8)]],
+    confirmPassword: ['', [Validators.required]]
+  });
+
   palettes: { key: ColorPalette; label: string; colors: { primary: string; secondary: string; accent: string } }[] = [
-    { key: 'default', label: 'Default', colors: { primary: '#2d3436', secondary: '#636e72', accent: '#00b894' } },
-    { key: 'ocean', label: 'Ocean', colors: { primary: '#0984e3', secondary: '#74b9ff', accent: '#00cec9' } },
-    { key: 'sunset', label: 'Sunset', colors: { primary: '#e17055', secondary: '#fdcb6e', accent: '#fd79a8' } },
-    { key: 'forest', label: 'Forest', colors: { primary: '#00b894', secondary: '#55efc4', accent: '#81ecec' } },
-    { key: 'lavender', label: 'Lavender', colors: { primary: '#6c5ce7', secondary: '#a29bfe', accent: '#fd79a8' } }
+    { key: 'default', label: 'Default', colors: { primary: '#4f46e5', secondary: '#6366f1', accent: '#06b6d4' } },
+    { key: 'ocean', label: 'Ocean', colors: { primary: '#0284c7', secondary: '#38bdf8', accent: '#0891b2' } },
+    { key: 'sunset', label: 'Sunset', colors: { primary: '#ea580c', secondary: '#fb923c', accent: '#db2777' } },
+    { key: 'forest', label: 'Forest', colors: { primary: '#059669', secondary: '#34d399', accent: '#0d9488' } },
+    { key: 'lavender', label: 'Lavender', colors: { primary: '#7c3aed', secondary: '#a78bfa', accent: '#c026d3' } }
   ];
 
   ngOnInit(): void {
@@ -49,30 +65,68 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  getUserInitials(): string {
-    const user = this.authService.currentUser();
-    if (user?.firstName && user?.lastName) {
-      return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
-    }
-    return user?.email?.[0]?.toUpperCase() || 'U';
-  }
-
-  getRoleBadgeClass(): string {
-    const role = this.authService.currentUser()?.role?.name;
-    if (role === 'ADMIN') return 'bg-danger';
-    if (role === 'MODERATOR') return 'bg-warning';
-    return 'bg-primary';
-  }
-
   saveProfile(): void {
     if (this.profileForm.invalid) return;
-    this.saving.set(true);
-    setTimeout(() => {
-      this.saving.set(false);
-    }, 1000);
+
+    const user = this.authService.currentUser();
+    if (!user) return;
+
+    this.savingProfile.set(true);
+    this.profileSuccess.set('');
+    this.profileError.set('');
+
+    const data = {
+      firstName: this.profileForm.value.firstName,
+      lastName: this.profileForm.value.lastName
+    };
+
+    this.http.put(`${API_URL}/users/${user.id}`, data).subscribe({
+      next: (res: any) => {
+        this.savingProfile.set(false);
+        this.profileSuccess.set('Perfil actualizado correctamente');
+        if (res.data) {
+          this.authService.currentUser.set(res.data);
+        }
+      },
+      error: (err) => {
+        this.savingProfile.set(false);
+        this.profileError.set(err.error?.message || 'Error al actualizar el perfil');
+      }
+    });
   }
 
-  resetProfileForm(): void {
-    this.initForm();
+  changePassword(): void {
+    if (this.passwordForm.invalid) {
+      this.passwordForm.markAllAsTouched();
+      return;
+    }
+
+    const { currentPassword, newPassword, confirmPassword } = this.passwordForm.value;
+
+    if (newPassword !== confirmPassword) {
+      this.passwordError.set('Las contraseñas no coinciden');
+      return;
+    }
+
+    if (currentPassword === newPassword) {
+      this.passwordError.set('La nueva contraseña no puede ser igual a la actual');
+      return;
+    }
+
+    this.savingPassword.set(true);
+    this.passwordSuccess.set('');
+    this.passwordError.set('');
+
+    this.http.post(`${API_URL}/auth/change-password`, { currentPassword, newPassword }).subscribe({
+      next: () => {
+        this.savingPassword.set(false);
+        this.passwordSuccess.set('Contraseña actualizada correctamente');
+        this.passwordForm.reset();
+      },
+      error: (err) => {
+        this.savingPassword.set(false);
+        this.passwordError.set(err.error?.message || 'Error al cambiar la contraseña');
+      }
+    });
   }
 }

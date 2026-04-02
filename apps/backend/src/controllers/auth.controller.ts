@@ -10,6 +10,7 @@ import {
   ForgotPasswordSchema,
   ResetPasswordSchema,
   ResendVerificationSchema,
+  ChangePasswordSchema,
 } from "../schemas/user.schema";
 import { HTTP_STATUS } from "../types/error.types";
 import { successResponse, errorResponse } from "../types/api-response.types";
@@ -459,6 +460,76 @@ class AuthController {
       res
         .status(HTTP_STATUS.OK)
         .json(successResponse(null, "Contraseña restablecida correctamente"));
+    } catch {
+      res
+        .status(HTTP_STATUS.INTERNAL_ERROR)
+        .json(errorResponse("InternalError", "Error interno del servidor"));
+    }
+  }
+
+  async changePassword(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const result = ChangePasswordSchema.safeParse(req.body);
+
+      if (!result.success) {
+        const errors = result.error.issues.map((issue) => ({
+          field: issue.path.join("."),
+          message: issue.message,
+        }));
+        res
+          .status(HTTP_STATUS.BAD_REQUEST)
+          .json(
+            errorResponse(
+              "ValidationError",
+              "La validación de la solicitud falló",
+              errors,
+            ),
+          );
+        return;
+      }
+
+      const { currentPassword, newPassword } = result.data;
+      const user = req.user as { userId: string; email: string };
+      const existingUser = await userService.findById(user.userId);
+
+      if (!existingUser) {
+        res
+          .status(HTTP_STATUS.NOT_FOUND)
+          .json(errorResponse("NotFound", "El usuario no fue encontrado"));
+        return;
+      }
+
+      if (currentPassword === newPassword) {
+        res
+          .status(HTTP_STATUS.BAD_REQUEST)
+          .json(errorResponse("BadRequest", "La nueva contraseña no puede ser igual a la actual"));
+        return;
+      }
+
+      const isValidPassword = await userService.validatePassword(
+        existingUser,
+        currentPassword,
+      );
+
+      if (!isValidPassword) {
+        res
+          .status(HTTP_STATUS.UNAUTHORIZED)
+          .json(errorResponse("Unauthorized", "La contraseña actual es incorrecta"));
+        return;
+      }
+
+      const updated = await userService.updatePassword(user.userId, newPassword);
+
+      if (!updated) {
+        res
+          .status(HTTP_STATUS.INTERNAL_ERROR)
+          .json(errorResponse("InternalError", "Error al actualizar la contraseña"));
+        return;
+      }
+
+      res
+        .status(HTTP_STATUS.OK)
+        .json(successResponse(null, "Contraseña actualizada correctamente"));
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)

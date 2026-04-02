@@ -4,114 +4,127 @@
     <p class="subtitle">Administra tu cuenta y preferencias</p>
   </div>
 
-  <div>
-    <div class="col-lg">
-      <div class="card fade-in" style="animation-delay: 0.2s;">
-        <div class="card-header">
-          <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item">
-              <button class="nav-link" [class.active]="activeTab() === 'profile'" (click)="activeTab.set('profile')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-                Perfil
-              </button>
-            </li>
-            <li class="nav-item">
-              <button class="nav-link" [class.active]="activeTab() === 'theme'" (click)="activeTab.set('theme')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="5" />
-                  <line x1="12" y1="1" x2="12" y2="3" />
-                  <line x1="12" y1="21" x2="12" y2="23" />
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                  <line x1="1" y1="12" x2="3" y2="12" />
-                  <line x1="21" y1="12" x2="23" y2="12" />
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-                Apariencia
-              </button>
-            </li>
-          </ul>
-        </div>
+  <div class="card fade-in">
+    <div class="card-header">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <button class="nav-link" [class.active]="activeTab() === 'profile'" (click)="activeTab.set('profile')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Perfil
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" [class.active]="activeTab() === 'password'" (click)="activeTab.set('password')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Contraseña
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" [class.active]="activeTab() === 'theme'" (click)="activeTab.set('theme')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            Apariencia
+          </button>
+        </li>
+      </ul>
+    </div>
 
-        <div class="card-body">
-          @if (activeTab() === 'profile') {
-          <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label">Nombre</label>
-                <input type="text" class="form-control" formControlName="firstName" />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Apellido</label>
-                <input type="text" class="form-control" formControlName="lastName" />
-              </div>
-              <div class="col-12">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-control" formControlName="email" [attr.disabled]="true" />
-                <small class="text-muted">El email no se puede cambiar</small>
-              </div>
-            </div>
-
-            <div class="mt-4 d-flex gap-2">
-              <button type="submit" class="btn btn-primary" [disabled]="saving()">
-                @if (saving()) {
-                <span class="spinner-border spinner-border-sm me-2"></span>
-                }
-                Guardar cambios
-              </button>
-              <button type="button" class="btn btn-outline-secondary" (click)="resetProfileForm()">
-                Cancelar
-              </button>
-            </div>
-          </form>
+    <div class="card-body">
+      @if (activeTab() === 'profile') {
+        <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+          @if (profileSuccess()) {
+            <div class="alert alert-success">{{ profileSuccess() }}</div>
           }
-
-          @if (activeTab() === 'theme') {
-          <div class="theme-settings">
-            <div class="theme-option">
-              <label class="form-label">Modo</label>
-              <div class="theme-modes">
-                <button class="mode-btn" [class.active]="themeService.currentTheme() === 'light'"
-                  (click)="themeService.setTheme('light')">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="5" />
-                    <line x1="12" y1="1" x2="12" y2="3" />
-                    <line x1="12" y1="21" x2="12" y2="23" />
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                    <line x1="1" y1="12" x2="3" y2="12" />
-                    <line x1="21" y1="12" x2="23" y2="12" />
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                  </svg>
-                  Claro
-                </button>
-                <button class="mode-btn" [class.active]="themeService.currentTheme() === 'dark'"
-                  (click)="themeService.setTheme('dark')">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                  </svg>
-                  Oscuro
-                </button>
-              </div>
+          @if (profileError()) {
+            <div class="alert alert-danger">{{ profileError() }}</div>
+          }
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control" formControlName="firstName" />
             </div>
+            <div class="col-md-6">
+              <label class="form-label">Apellido</label>
+              <input type="text" class="form-control" formControlName="lastName" />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" formControlName="email" [attr.disabled]="true" />
+              <small class="text-muted">El email no se puede cambiar</small>
+            </div>
+          </div>
 
-            <div class="theme-option mt-4">
-              <label class="form-label">Paleta de colores</label>
-              <div class="palette-grid">
-                @for (palette of palettes; track palette.key) {
-                <button class="palette-btn" [class.active]="themeService.currentPalette() === palette.key"
-                  (click)="themeService.setPalette(palette.key)" [style.--preview-primary]="palette.colors.primary"
-                  [style.--preview-secondary]="palette.colors.secondary"
-                  [style.--preview-accent]="palette.colors.accent">
+          <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary" [disabled]="savingProfile()">
+              @if (savingProfile()) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+              }
+              Guardar cambios
+            </button>
+          </div>
+        </form>
+      }
+
+      @if (activeTab() === 'password') {
+        <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+          @if (passwordSuccess()) {
+            <div class="alert alert-success">{{ passwordSuccess() }}</div>
+          }
+          @if (passwordError()) {
+            <div class="alert alert-danger">{{ passwordError() }}</div>
+          }
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Contraseña actual</label>
+              <input type="password" class="form-control" formControlName="currentPassword" placeholder="••••••••" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Nueva contraseña</label>
+              <input type="password" class="form-control" formControlName="newPassword" placeholder="••••••••" />
+              @if (passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched) {
+                <small class="text-danger">Mínimo 8 caracteres</small>
+              }
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Confirmar nueva contraseña</label>
+              <input type="password" class="form-control" formControlName="confirmPassword" placeholder="••••••••" />
+              @if (passwordForm.get('confirmPassword')?.touched && passwordForm.get('newPassword')?.value !== passwordForm.get('confirmPassword')?.value) {
+                <small class="text-danger">Las contraseñas no coinciden</small>
+              }
+            </div>
+          </div>
+
+          <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary" [disabled]="savingPassword()">
+              @if (savingPassword()) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+              }
+              Cambiar contraseña
+            </button>
+          </div>
+        </form>
+      }
+
+      @if (activeTab() === 'theme') {
+        <div class="theme-settings">
+          <div class="theme-option">
+            <label class="form-label">Modo</label>
+            <div class="theme-modes">
+              <button class="mode-btn" [class.active]="themeService.currentTheme() === 'light'" (click)="themeService.setTheme('light')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                Claro
+              </button>
+              <button class="mode-btn" [class.active]="themeService.currentTheme() === 'dark'" (click)="themeService.setTheme('dark')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                Oscuro
+              </button>
+            </div>
+          </div>
+
+          <div class="theme-option mt-4">
+            <label class="form-label">Paleta de colores</label>
+            <div class="palette-grid">
+              @for (palette of palettes; track palette.key) {
+                <button class="palette-btn" [class.active]="themeService.currentPalette() === palette.key" (click)="themeService.setPalette(palette.key)" [style.--preview-primary]="palette.colors.primary" [style.--preview-secondary]="palette.colors.secondary" [style.--preview-accent]="palette.colors.accent">
                   <span class="palette-preview">
                     <span class="preview-dot" style="background: var(--preview-primary)"></span>
                     <span class="preview-dot" style="background: var(--preview-secondary)"></span>
@@ -119,32 +132,11 @@
                   </span>
                   <span class="palette-name">{{ palette.label }}</span>
                 </button>
-                }
-              </div>
-            </div>
-
-            <div class="theme-preview mt-4">
-              <label class="form-label">Vista previa</label>
-              <div class="preview-card">
-                <div class="preview-header">
-                  <span class="preview-btn"></span>
-                  <span class="preview-btn"></span>
-                  <span class="preview-btn"></span>
-                </div>
-                <div class="preview-body">
-                  <div class="preview-sidebar"></div>
-                  <div class="preview-content">
-                    <div class="preview-line" style="width: 60%"></div>
-                    <div class="preview-line" style="width: 80%"></div>
-                    <div class="preview-line" style="width: 40%"></div>
-                  </div>
-                </div>
-              </div>
+              }
             </div>
           </div>
-          }
         </div>
-      </div>
+      }
     </div>
   </div>
 </div>

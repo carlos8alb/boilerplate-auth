@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -19,6 +19,15 @@ export class LayoutComponent {
   sidebarOpen = signal(false);
   dropdownOpen = signal(false);
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    const dropdown = target.closest('.user-dropdown');
+    if (!dropdown && this.dropdownOpen()) {
+      this.dropdownOpen.set(false);
+    }
+  }
+
   toggleSidebar(): void {
     this.sidebarCollapsed.update(v => !v);
   }
@@ -37,7 +46,8 @@ export class LayoutComponent {
     }
   }
 
-  toggleDropdown(): void {
+  toggleDropdown(event: Event): void {
+    event.stopPropagation();
     this.dropdownOpen.update(v => !v);
   }
 

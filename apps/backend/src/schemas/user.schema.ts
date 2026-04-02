@@ -33,8 +33,14 @@ export const ResendVerificationSchema = z.object({
   email: z.string().email("El email es requerido y debe ser válido"),
 });
 
+export const ChangePasswordSchema = z.object({
+  currentPassword: z.string().min(1, "La contraseña actual es requerida"),
+  newPassword: z.string().min(8, "La nueva contraseña debe tener al menos 8 caracteres"),
+});
+
 export type LoginInput = z.infer<typeof LoginSchema>;
 export type RegisterInput = z.infer<typeof RegisterSchema>;
 export type ForgotPasswordInput = z.infer<typeof ForgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof ResetPasswordSchema>;
 export type ResendVerificationInput = z.infer<typeof ResendVerificationSchema>;
+export type ChangePasswordInput = z.infer<typeof ChangePasswordSchema>;

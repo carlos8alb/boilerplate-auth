@@ -17,7 +17,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401 && !req.url.includes('/auth/refresh')) {
+      const skipRefreshUrls = ['/auth/refresh', '/auth/change-password'];
+      const shouldSkip = skipRefreshUrls.some(url => req.url.includes(url));
+
+      if (error.status === 401 && !shouldSkip) {
         return authService.refreshToken().pipe(
           switchMap(tokens => {
             const newReq = req.clone({
