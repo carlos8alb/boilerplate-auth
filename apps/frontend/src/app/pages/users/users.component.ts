@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User, Role } from '../../models/auth.model';
 import { API_URL } from '../../constants/api.constants';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -15,6 +16,7 @@ import { API_URL } from '../../constants/api.constants';
 export class UsersComponent implements OnInit {
   private http = inject(HttpClient);
   private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
 
   users = signal<User[]>([]);
   filteredUsers = signal<User[]>([]);
@@ -26,6 +28,9 @@ export class UsersComponent implements OnInit {
   saving = signal(false);
   editError = signal('');
   editSuccess = signal('');
+
+  resendingEmail = signal<string | null>(null);
+  resendMessage = signal<{ email: string; message: string; success: boolean } | null>(null);
 
   editForm = this.fb.group({
     firstName: ['', [Validators.required]],
@@ -79,7 +84,8 @@ export class UsersComponent implements OnInit {
   }
 
   filterUsers(): void {
-    let filtered = this.users();
+    const currentUserId = this.authService.currentUser()?.id;
+    let filtered = this.users().filter(u => u.id !== currentUserId);
 
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
@@ -119,6 +125,24 @@ export class UsersComponent implements OnInit {
       day: '2-digit',
       month: 'short',
       year: 'numeric'
+    });
+  }
+
+  resendVerificationEmail(user: User): void {
+    this.resendingEmail.set(user.id);
+    this.resendMessage.set(null);
+
+    this.http.post<any>(`${API_URL}/auth/resend-verification`, { email: user.email }).subscribe({
+      next: (res) => {
+        this.resendingEmail.set(null);
+        this.resendMessage.set({ email: user.email, message: res.message, success: true });
+        setTimeout(() => this.resendMessage.set(null), 3000);
+      },
+      error: (err) => {
+        this.resendingEmail.set(null);
+        this.resendMessage.set({ email: user.email, message: err.error?.message || 'Error al enviar email', success: false });
+        setTimeout(() => this.resendMessage.set(null), 3000);
+      }
     });
   }
 
