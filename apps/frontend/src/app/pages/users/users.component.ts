@@ -1,24 +1,36 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from '../../models/auth.model';
 import { API_URL } from '../../constants/api.constants';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })
 export class UsersComponent implements OnInit {
   private http = inject(HttpClient);
+  private fb = inject(FormBuilder);
 
   users = signal<User[]>([]);
   filteredUsers = signal<User[]>([]);
   searchTerm = '';
   roleFilter = '';
+
+  editingUser = signal<User | null>(null);
+  saving = signal(false);
+  editError = signal('');
+  editSuccess = signal('');
+
+  editForm = this.fb.group({
+    firstName: ['', [Validators.required]],
+    lastName: ['', [Validators.required]],
+    roleId: ['', [Validators.required]]
+  });
 
   pagination = signal({
     page: 1,
@@ -100,6 +112,54 @@ export class UsersComponent implements OnInit {
   }
 
   editUser(user: User): void {
+    this.editingUser.set(user);
+    this.editError.set('');
+    this.editSuccess.set('');
+    this.editForm.patchValue({
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      roleId: user.roleId
+    });
+  }
+
+  closeModal(): void {
+    this.editingUser.set(null);
+    this.editForm.reset();
+    this.editError.set('');
+    this.editSuccess.set('');
+  }
+
+  saveUser(): void {
+    if (this.editForm.invalid) {
+      this.editForm.markAllAsTouched();
+      return;
+    }
+
+    const user = this.editingUser();
+    if (!user) return;
+
+    this.saving.set(true);
+    this.editError.set('');
+    this.editSuccess.set('');
+
+    const data = {
+      firstName: this.editForm.value.firstName,
+      lastName: this.editForm.value.lastName,
+      roleId: this.editForm.value.roleId
+    };
+
+    this.http.put(`${API_URL}/users/${user.id}`, data).subscribe({
+      next: () => {
+        this.saving.set(false);
+        this.editSuccess.set('Usuario actualizado correctamente');
+        this.loadUsers();
+        setTimeout(() => this.closeModal(), 1000);
+      },
+      error: (err) => {
+        this.saving.set(false);
+        this.editError.set(err.error?.message || 'Error al actualizar el usuario');
+      }
+    });
   }
 
   confirmDelete(user: User): void {
