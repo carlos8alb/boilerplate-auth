@@ -46,10 +46,9 @@ export class AuthService {
       );
   }
 
-  register(data: RegisterRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${API_URL}/auth/register`, data)
+  register(data: RegisterRequest): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${API_URL}/auth/register`, data)
       .pipe(
-        tap(response => this.handleAuthSuccess(response)),
         catchError(error => {
           console.error('Register error:', error);
           return throwError(() => error);

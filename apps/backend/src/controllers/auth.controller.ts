@@ -64,30 +64,17 @@ class AuthController {
       const token = await userService.setEmailVerificationToken(user.id);
 
       if (token) {
-        await emailService.sendVerificationEmail(email, token);
+        const emailSent = await emailService.sendVerificationEmail(email, token);
+        if (!emailSent) {
+          console.warn('No se pudo enviar el email de verificación');
+        }
       }
-
-      const accessToken = jwtService.generateToken({
-        userId: user.id,
-        email: user.email,
-      });
-      const refreshToken = jwtService.generateRefreshToken({
-        userId: user.id,
-        email: user.email,
-      });
-
-      const { passwordHash: _, ...userWithoutPassword } = user;
-      const response: AuthResponse = {
-        accessToken,
-        refreshToken,
-        user: userWithoutPassword,
-      };
 
       res
         .status(HTTP_STATUS.CREATED)
         .json(
           successResponse(
-            response,
+            { email },
             "Usuario creado. Se envió un correo de verificación",
           ),
         );
