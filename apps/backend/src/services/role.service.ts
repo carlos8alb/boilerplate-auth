@@ -37,6 +37,7 @@ class RoleService {
       return await prisma.role.create({
         data: {
           name: data.name as RoleName,
+          displayName: data.displayName,
           description: data.description,
         },
       });
@@ -45,12 +46,13 @@ class RoleService {
     }
   }
 
-  async update(id: string, data: { name?: string; description?: string }) {
+  async update(id: string, data: { name?: string; displayName?: string; description?: string }) {
     try {
       return await prisma.role.update({
         where: { id },
         data: {
           name: data.name as RoleName,
+          displayName: data.displayName,
           description: data.description,
         },
       });

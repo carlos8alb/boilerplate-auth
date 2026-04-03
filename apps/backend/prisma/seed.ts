@@ -3,29 +3,35 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const roles: { name: 'ADMINISTRADOR' | 'USUARIO' | 'MODERADOR' | 'INVITADO' | 'CLIENTE' | 'EMPRESA'; description: string }[] = [
+const roles: { name: 'ADMIN' | 'USER' | 'MODERATOR' | 'GUEST' | 'CLIENT' | 'COMPANY'; displayName: string; description: string }[] = [
   {
-    name: 'ADMINISTRADOR',
+    name: 'ADMIN',
+    displayName: 'Administrador',
     description: 'Administrador con acceso completo a todas las funcionalidades'
   },
   {
-    name: 'USUARIO',
+    name: 'USER',
+    displayName: 'Usuario',
     description: 'Usuario regular con acceso básico'
   },
   {
-    name: 'MODERADOR',
+    name: 'MODERATOR',
+    displayName: 'Moderador',
     description: 'Moderador con permisos de gestión'
   },
   {
-    name: 'INVITADO',
+    name: 'GUEST',
+    displayName: 'Invitado',
     description: 'Invitado con acceso limitado'
   },
   {
-    name: 'CLIENTE',
+    name: 'CLIENT',
+    displayName: 'Cliente',
     description: 'Cliente con acceso a funcionalidades específicas'
   },
   {
-    name: 'EMPRESA',
+    name: 'COMPANY',
+    displayName: 'Empresa',
     description: 'Empresa con acceso a funcionalidades específicas'
   }
 ]

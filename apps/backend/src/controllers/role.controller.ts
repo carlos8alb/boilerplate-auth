@@ -57,13 +57,22 @@ class RoleController {
         return;
       }
 
-      const { name, description } = result.data;
+      const { name, displayName, description } = result.data;
 
       if (!name) {
         res
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse("ValidationError", "El nombre del rol es requerido"),
+          );
+        return;
+      }
+
+      if (!displayName) {
+        res
+          .status(HTTP_STATUS.BAD_REQUEST)
+          .json(
+            errorResponse("ValidationError", "El nombre para mostrar es requerido"),
           );
         return;
       }
@@ -76,7 +85,7 @@ class RoleController {
         return;
       }
 
-      const role = await roleService.create({ name, description });
+      const role = await roleService.create({ name, displayName, description });
 
       if (!role) {
         res

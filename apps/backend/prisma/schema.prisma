@@ -14,17 +14,18 @@ datasource db {
 }
 
 enum RoleName {
-  ADMINISTRADOR
-  USUARIO
-  MODERADOR
-  INVITADO
-  CLIENTE
-  EMPRESA
+  ADMIN
+  USER
+  MODERATOR
+  GUEST
+  CLIENT
+  COMPANY
 }
 
 model Role {
   id          String   @id @default(uuid())
   name        RoleName @unique
+  displayName String
   description String?
   users       User[]
 
