@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import { userService } from "../services/user.service";
-import { jwtService } from "../services/jwt.service";
-import { emailService } from "../services/email.service";
-import { AuthResponse } from "../types/user.types";
-import { AuthRequest } from "../middlewares/auth.middleware";
+import { Request, Response } from 'express';
+import { userService } from '../services/user.service';
+import { jwtService } from '../services/jwt.service';
+import { emailService } from '../services/email.service';
+import { AuthResponse } from '../types/user.types';
+import { AuthRequest } from '../middlewares/auth.middleware';
 import {
   LoginSchema,
   RegisterSchema,
@@ -11,9 +11,9 @@ import {
   ResetPasswordSchema,
   ResendVerificationSchema,
   ChangePasswordSchema,
-} from "../schemas/user.schema";
-import { HTTP_STATUS } from "../types/error.types";
-import { successResponse, errorResponse } from "../types/api-response.types";
+} from '../schemas/user.schema';
+import { HTTP_STATUS } from '../types/error.types';
+import { successResponse, errorResponse } from '../types/api-response.types';
 
 class AuthController {
   async register(req: Request, res: Response): Promise<void> {
@@ -22,15 +22,15 @@ class AuthController {
 
       if (!result.success) {
         const errors = result.error.issues.map((issue) => ({
-          field: issue.path.join("."),
+          field: issue.path.join('.'),
           message: issue.message,
         }));
         res
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse(
-              "ValidationError",
-              "La validación de la solicitud falló",
+              'ValidationError',
+              'La validación de la solicitud falló',
               errors,
             ),
           );
@@ -43,7 +43,7 @@ class AuthController {
       if (existingUser) {
         res
           .status(HTTP_STATUS.CONFLICT)
-          .json(errorResponse("Conflict", "El usuario ya existe"));
+          .json(errorResponse('Conflict', 'El usuario ya existe'));
         return;
       }
 
@@ -57,7 +57,7 @@ class AuthController {
       if (!user) {
         res
           .status(HTTP_STATUS.INTERNAL_ERROR)
-          .json(errorResponse("InternalError", "Error al crear el usuario"));
+          .json(errorResponse('InternalError', 'Error al crear el usuario'));
         return;
       }
 
@@ -75,13 +75,13 @@ class AuthController {
         .json(
           successResponse(
             { email },
-            "Usuario creado. Se envió un correo de verificación",
+            'Usuario creado. Se envió un correo de verificación',
           ),
         );
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 
@@ -91,15 +91,15 @@ class AuthController {
 
       if (!result.success) {
         const errors = result.error.issues.map((issue) => ({
-          field: issue.path.join("."),
+          field: issue.path.join('.'),
           message: issue.message,
         }));
         res
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse(
-              "ValidationError",
-              "La validación de la solicitud falló",
+              'ValidationError',
+              'La validación de la solicitud falló',
               errors,
             ),
           );
@@ -112,7 +112,7 @@ class AuthController {
       if (!user) {
         res
           .status(HTTP_STATUS.UNAUTHORIZED)
-          .json(errorResponse("Unauthorized", "Credenciales inválidas"));
+          .json(errorResponse('Unauthorized', 'Credenciales inválidas'));
         return;
       }
 
@@ -123,7 +123,7 @@ class AuthController {
       if (!isValidPassword) {
         res
           .status(HTTP_STATUS.UNAUTHORIZED)
-          .json(errorResponse("Unauthorized", "Credenciales inválidas"));
+          .json(errorResponse('Unauthorized', 'Credenciales inválidas'));
         return;
       }
 
@@ -132,8 +132,8 @@ class AuthController {
           .status(HTTP_STATUS.FORBIDDEN)
           .json(
             errorResponse(
-              "Forbidden",
-              "Debes verificar tu correo electrónico antes de iniciar sesión",
+              'Forbidden',
+              'Debes verificar tu correo electrónico antes de iniciar sesión',
             ),
           );
         return;
@@ -148,7 +148,7 @@ class AuthController {
         email: user.email,
       });
 
-      const { passwordHash: _, ...userWithoutPassword } = user;
+      const { passwordHash: _passwordHash, ...userWithoutPassword } = user;
       const response: AuthResponse = {
         accessToken,
         refreshToken,
@@ -159,7 +159,7 @@ class AuthController {
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 
@@ -171,16 +171,16 @@ class AuthController {
       if (!existingUser) {
         res
           .status(HTTP_STATUS.NOT_FOUND)
-          .json(errorResponse("NotFound", "El usuario no fue encontrado"));
+          .json(errorResponse('NotFound', 'El usuario no fue encontrado'));
         return;
       }
 
-      const { passwordHash: _, ...userWithoutPassword } = existingUser;
+      const { passwordHash: _passwordHash, ...userWithoutPassword } = existingUser;
       res.status(HTTP_STATUS.OK).json(successResponse(userWithoutPassword));
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 
@@ -188,11 +188,11 @@ class AuthController {
     try {
       res
         .status(HTTP_STATUS.OK)
-        .json(successResponse(null, "Sesión cerrada correctamente"));
+        .json(successResponse(null, 'Sesión cerrada correctamente'));
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 
@@ -205,8 +205,8 @@ class AuthController {
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse(
-              "BadRequest",
-              "El token de actualización es requerido",
+              'BadRequest',
+              'El token de actualización es requerido',
             ),
           );
         return;
@@ -218,7 +218,7 @@ class AuthController {
       if (!user) {
         res
           .status(HTTP_STATUS.UNAUTHORIZED)
-          .json(errorResponse("Unauthorized", "El usuario no fue encontrado"));
+          .json(errorResponse('Unauthorized', 'El usuario no fue encontrado'));
         return;
       }
 
@@ -242,8 +242,8 @@ class AuthController {
         .status(HTTP_STATUS.UNAUTHORIZED)
         .json(
           errorResponse(
-            "Unauthorized",
-            "Token de actualización inválido o expirado",
+            'Unauthorized',
+            'Token de actualización inválido o expirado',
           ),
         );
     }
@@ -253,13 +253,13 @@ class AuthController {
     try {
       const { token } = req.query;
 
-      if (!token || typeof token !== "string") {
+      if (!token || typeof token !== 'string') {
         res
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse(
-              "BadRequest",
-              "El token de verificación es requerido",
+              'BadRequest',
+              'El token de verificación es requerido',
             ),
           );
         return;
@@ -272,8 +272,8 @@ class AuthController {
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse(
-              "BadRequest",
-              "Token de verificación inválido o expirado",
+              'BadRequest',
+              'Token de verificación inválido o expirado',
             ),
           );
         return;
@@ -281,11 +281,11 @@ class AuthController {
 
       res
         .status(HTTP_STATUS.OK)
-        .json(successResponse(null, "Email verificado correctamente"));
+        .json(successResponse(null, 'Email verificado correctamente'));
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 
@@ -295,15 +295,15 @@ class AuthController {
 
       if (!result.success) {
         const errors = result.error.issues.map((issue) => ({
-          field: issue.path.join("."),
+          field: issue.path.join('.'),
           message: issue.message,
         }));
         res
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse(
-              "ValidationError",
-              "La validación de la solicitud falló",
+              'ValidationError',
+              'La validación de la solicitud falló',
               errors,
             ),
           );
@@ -319,7 +319,7 @@ class AuthController {
           .json(
             successResponse(
               null,
-              "Si el email existe, se ha enviado un correo de verificación",
+              'Si el email existe, se ha enviado un correo de verificación',
             ),
           );
         return;
@@ -328,7 +328,7 @@ class AuthController {
       if (user.isEmailVerified) {
         res
           .status(HTTP_STATUS.BAD_REQUEST)
-          .json(errorResponse("BadRequest", "El email ya está verificado"));
+          .json(errorResponse('BadRequest', 'El email ya está verificado'));
         return;
       }
 
@@ -337,7 +337,7 @@ class AuthController {
       if (!token) {
         res
           .status(HTTP_STATUS.INTERNAL_ERROR)
-          .json(errorResponse("InternalError", "Error al generar el token"));
+          .json(errorResponse('InternalError', 'Error al generar el token'));
         return;
       }
 
@@ -348,8 +348,8 @@ class AuthController {
           .status(HTTP_STATUS.INTERNAL_ERROR)
           .json(
             errorResponse(
-              "InternalError",
-              "Error al enviar el correo de verificación",
+              'InternalError',
+              'Error al enviar el correo de verificación',
             ),
           );
         return;
@@ -357,11 +357,11 @@ class AuthController {
 
       res
         .status(HTTP_STATUS.OK)
-        .json(successResponse(null, "Correo de verificación enviado"));
+        .json(successResponse(null, 'Correo de verificación enviado'));
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 
@@ -371,15 +371,15 @@ class AuthController {
 
       if (!result.success) {
         const errors = result.error.issues.map((issue) => ({
-          field: issue.path.join("."),
+          field: issue.path.join('.'),
           message: issue.message,
         }));
         res
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse(
-              "ValidationError",
-              "La validación de la solicitud falló",
+              'ValidationError',
+              'La validación de la solicitud falló',
               errors,
             ),
           );
@@ -398,13 +398,13 @@ class AuthController {
         .json(
           successResponse(
             null,
-            "Si el email existe, se ha enviado un enlace de recuperación",
+            'Si el email existe, se ha enviado un enlace de recuperación',
           ),
         );
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 
@@ -414,15 +414,15 @@ class AuthController {
 
       if (!result.success) {
         const errors = result.error.issues.map((issue) => ({
-          field: issue.path.join("."),
+          field: issue.path.join('.'),
           message: issue.message,
         }));
         res
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse(
-              "ValidationError",
-              "La validación de la solicitud falló",
+              'ValidationError',
+              'La validación de la solicitud falló',
               errors,
             ),
           );
@@ -437,8 +437,8 @@ class AuthController {
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse(
-              "BadRequest",
-              "Token de recuperación inválido o expirado",
+              'BadRequest',
+              'Token de recuperación inválido o expirado',
             ),
           );
         return;
@@ -446,11 +446,11 @@ class AuthController {
 
       res
         .status(HTTP_STATUS.OK)
-        .json(successResponse(null, "Contraseña restablecida correctamente"));
+        .json(successResponse(null, 'Contraseña restablecida correctamente'));
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 
@@ -460,15 +460,15 @@ class AuthController {
 
       if (!result.success) {
         const errors = result.error.issues.map((issue) => ({
-          field: issue.path.join("."),
+          field: issue.path.join('.'),
           message: issue.message,
         }));
         res
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse(
-              "ValidationError",
-              "La validación de la solicitud falló",
+              'ValidationError',
+              'La validación de la solicitud falló',
               errors,
             ),
           );
@@ -482,14 +482,14 @@ class AuthController {
       if (!existingUser) {
         res
           .status(HTTP_STATUS.NOT_FOUND)
-          .json(errorResponse("NotFound", "El usuario no fue encontrado"));
+          .json(errorResponse('NotFound', 'El usuario no fue encontrado'));
         return;
       }
 
       if (currentPassword === newPassword) {
         res
           .status(HTTP_STATUS.BAD_REQUEST)
-          .json(errorResponse("BadRequest", "La nueva contraseña no puede ser igual a la actual"));
+          .json(errorResponse('BadRequest', 'La nueva contraseña no puede ser igual a la actual'));
         return;
       }
 
@@ -501,7 +501,7 @@ class AuthController {
       if (!isValidPassword) {
         res
           .status(HTTP_STATUS.UNAUTHORIZED)
-          .json(errorResponse("Unauthorized", "La contraseña actual es incorrecta"));
+          .json(errorResponse('Unauthorized', 'La contraseña actual es incorrecta'));
         return;
       }
 
@@ -510,17 +510,17 @@ class AuthController {
       if (!updated) {
         res
           .status(HTTP_STATUS.INTERNAL_ERROR)
-          .json(errorResponse("InternalError", "Error al actualizar la contraseña"));
+          .json(errorResponse('InternalError', 'Error al actualizar la contraseña'));
         return;
       }
 
       res
         .status(HTTP_STATUS.OK)
-        .json(successResponse(null, "Contraseña actualizada correctamente"));
+        .json(successResponse(null, 'Contraseña actualizada correctamente'));
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 }

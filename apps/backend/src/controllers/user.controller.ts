@@ -1,10 +1,10 @@
-import { Response } from "express";
-import { userService } from "../services/user.service";
-import { HTTP_STATUS } from "../types/error.types";
-import { successResponse, errorResponse } from "../types/api-response.types";
-import { AuthRequest } from "../middlewares/auth.middleware";
-import { RoleName } from "@prisma/client";
-import { UpdateUserSchema } from "../schemas/user.schema";
+import { Response } from 'express';
+import { userService } from '../services/user.service';
+import { HTTP_STATUS } from '../types/error.types';
+import { successResponse, errorResponse } from '../types/api-response.types';
+import { AuthRequest } from '../middlewares/auth.middleware';
+import { RoleName } from '@prisma/client';
+import { UpdateUserSchema } from '../schemas/user.schema';
 
 class UserController {
   async getAll(req: AuthRequest, res: Response): Promise<void> {
@@ -16,7 +16,7 @@ class UserController {
         res
           .status(HTTP_STATUS.FORBIDDEN)
           .json(
-            errorResponse("Forbidden", "Se requiere acceso de administrador"),
+            errorResponse('Forbidden', 'Se requiere acceso de administrador'),
           );
         return;
       }
@@ -27,7 +27,7 @@ class UserController {
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 
@@ -37,15 +37,15 @@ class UserController {
 
       if (!result.success) {
         const errors = result.error.issues.map((issue) => ({
-          field: issue.path.join("."),
+          field: issue.path.join('.'),
           message: issue.message,
         }));
         res
           .status(HTTP_STATUS.BAD_REQUEST)
           .json(
             errorResponse(
-              "ValidationError",
-              "La validación de la solicitud falló",
+              'ValidationError',
+              'La validación de la solicitud falló',
               errors,
             ),
           );
@@ -58,7 +58,7 @@ class UserController {
       if (!currentUser) {
         res
           .status(HTTP_STATUS.UNAUTHORIZED)
-          .json(errorResponse("Unauthorized", "Usuario no autorizado"));
+          .json(errorResponse('Unauthorized', 'Usuario no autorizado'));
         return;
       }
 
@@ -74,8 +74,8 @@ class UserController {
           .status(HTTP_STATUS.FORBIDDEN)
           .json(
             errorResponse(
-              "Forbidden",
-              "No tienes permiso para actualizar este usuario",
+              'Forbidden',
+              'No tienes permiso para actualizar este usuario',
             ),
           );
         return;
@@ -86,19 +86,19 @@ class UserController {
       if (!updatedUser) {
         res
           .status(HTTP_STATUS.NOT_FOUND)
-          .json(errorResponse("NotFound", "El usuario no fue encontrado"));
+          .json(errorResponse('NotFound', 'El usuario no fue encontrado'));
         return;
       }
 
       res
         .status(HTTP_STATUS.OK)
         .json(
-          successResponse(updatedUser, "Usuario actualizado correctamente"),
+          successResponse(updatedUser, 'Usuario actualizado correctamente'),
         );
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 
@@ -111,7 +111,7 @@ class UserController {
         res
           .status(HTTP_STATUS.FORBIDDEN)
           .json(
-            errorResponse("Forbidden", "Se requiere acceso de administrador"),
+            errorResponse('Forbidden', 'Se requiere acceso de administrador'),
           );
         return;
       }
@@ -121,7 +121,7 @@ class UserController {
       if (!userIdToDelete) {
         res
           .status(HTTP_STATUS.BAD_REQUEST)
-          .json(errorResponse("BadRequest", "ID de usuario inválido"));
+          .json(errorResponse('BadRequest', 'ID de usuario inválido'));
         return;
       }
 
@@ -129,7 +129,7 @@ class UserController {
       if (!userToDelete) {
         res
           .status(HTTP_STATUS.NOT_FOUND)
-          .json(errorResponse("NotFound", "El usuario no fue encontrado"));
+          .json(errorResponse('NotFound', 'El usuario no fue encontrado'));
         return;
       }
 
@@ -138,17 +138,17 @@ class UserController {
       if (!deleted) {
         res
           .status(HTTP_STATUS.INTERNAL_ERROR)
-          .json(errorResponse("InternalError", "Error al eliminar el usuario"));
+          .json(errorResponse('InternalError', 'Error al eliminar el usuario'));
         return;
       }
 
       res
         .status(HTTP_STATUS.OK)
-        .json(successResponse(null, "Usuario eliminado correctamente"));
+        .json(successResponse(null, 'Usuario eliminado correctamente'));
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
-        .json(errorResponse("InternalError", "Error interno del servidor"));
+        .json(errorResponse('InternalError', 'Error interno del servidor'));
     }
   }
 }

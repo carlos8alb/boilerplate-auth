@@ -1,7 +1,7 @@
-import bcrypt from "bcryptjs";
-import crypto from "crypto";
-import { prisma } from "../config/prisma";
-import { RoleName } from "@prisma/client";
+import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
+import { prisma } from '../config/prisma';
+import { RoleName } from '@prisma/client';
 
 class UserService {
   async findByEmail(email: string) {
@@ -82,7 +82,7 @@ class UserService {
               passwordHash: hashedPassword,
               firstName,
               lastName,
-              roleId: defaultRole?.id || "",
+              roleId: defaultRole?.id || '',
               deletedAt: null,
             },
             include: { role: true },
@@ -117,7 +117,7 @@ class UserService {
           passwordHash: hashedPassword,
           firstName,
           lastName,
-          roleId: defaultRole?.id || "",
+          roleId: defaultRole?.id || '',
         },
         include: { role: true },
       });
@@ -160,7 +160,7 @@ class UserService {
 
   async setEmailVerificationToken(userId: string) {
     try {
-      const token = crypto.randomBytes(32).toString("hex");
+      const token = crypto.randomBytes(32).toString('hex');
       const expiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
       await prisma.user.update({
@@ -211,7 +211,7 @@ class UserService {
       });
       if (!user) return null;
 
-      const token = crypto.randomBytes(32).toString("hex");
+      const token = crypto.randomBytes(32).toString('hex');
       const expiry = new Date(Date.now() + 60 * 60 * 1000);
 
       await prisma.user.update({

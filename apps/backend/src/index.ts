@@ -1,11 +1,11 @@
-import express from "express";
-import cors from "cors";
-import { config } from "./config/env";
-import authRoutes from "./routes/auth.routes";
-import roleRoutes from "./routes/role.routes";
-import userRoutes from "./routes/user.routes";
-import { swaggerSpec, swaggerUi } from "./config/swagger";
-import { checkDatabaseConnection } from "./config/prisma";
+import express from 'express';
+import cors from 'cors';
+import { config } from './config/env';
+import authRoutes from './routes/auth.routes';
+import roleRoutes from './routes/role.routes';
+import userRoutes from './routes/user.routes';
+import { swaggerSpec, swaggerUi } from './config/swagger';
+import { checkDatabaseConnection } from './config/prisma';
 
 async function startServer(): Promise<void> {
   await checkDatabaseConnection();
@@ -21,14 +21,14 @@ async function startServer(): Promise<void> {
 
   app.use(express.json());
 
-  app.use("/api/v1/auth", authRoutes);
-  app.use("/api/v1/roles", roleRoutes);
-  app.use("/api/v1/users", userRoutes);
+  app.use('/api/v1/auth', authRoutes);
+  app.use('/api/v1/roles', roleRoutes);
+  app.use('/api/v1/users', userRoutes);
 
-  app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-  app.get("/health", (_req, res) => {
-    res.json({ status: "ok" });
+  app.get('/health', (_req, res) => {
+    res.json({ status: 'ok' });
   });
 
   app.listen(config.port, () => {

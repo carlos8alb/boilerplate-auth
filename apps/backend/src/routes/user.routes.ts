@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { userController } from "../controllers/user.controller";
-import { authenticate } from "../middlewares/auth.middleware";
+import { Router } from 'express';
+import { userController } from '../controllers/user.controller';
+import { authenticate } from '../middlewares/auth.middleware';
 
 const router: ReturnType<typeof Router> = Router();
 
@@ -26,7 +26,7 @@ const router: ReturnType<typeof Router> = Router();
  *       403:
  *         description: Forbidden - Admin access required
  */
-router.get("/", authenticate, userController.getAll);
+router.get('/', authenticate, userController.getAll);
 
 /**
  * @swagger
@@ -65,7 +65,7 @@ router.get("/", authenticate, userController.getAll);
  *       404:
  *         description: User not found
  */
-router.put("/:id", authenticate, userController.update);
+router.put('/:id', authenticate, userController.update);
 
 /**
  * @swagger
@@ -91,6 +91,6 @@ router.put("/:id", authenticate, userController.update);
  *       404:
  *         description: User not found
  */
-router.delete("/:id", authenticate, userController.delete);
+router.delete('/:id', authenticate, userController.delete);
 
 export default router;

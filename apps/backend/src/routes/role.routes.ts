@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { roleController } from "../controllers/role.controller";
+import { Router } from 'express';
+import { roleController } from '../controllers/role.controller';
 
 const router: ReturnType<typeof Router> = Router();
 
@@ -19,7 +19,7 @@ const router: ReturnType<typeof Router> = Router();
  *               items:
  *                 $ref: '#/components/schemas/Role'
  */
-router.get("/", roleController.findAll);
+router.get('/', roleController.findAll);
 
 /**
  * @swagger
@@ -43,7 +43,7 @@ router.get("/", roleController.findAll);
  *       404:
  *         description: Role not found
  */
-router.get("/:id", roleController.findById);
+router.get('/:id', roleController.findById);
 
 /**
  * @swagger
@@ -72,7 +72,7 @@ router.get("/:id", roleController.findById);
  *       409:
  *         description: Role already exists
  */
-router.post("/", roleController.create);
+router.post('/', roleController.create);
 
 /**
  * @swagger
@@ -102,7 +102,7 @@ router.post("/", roleController.create);
  *       404:
  *         description: Role not found
  */
-router.put("/:id", roleController.update);
+router.put('/:id', roleController.update);
 
 /**
  * @swagger
@@ -122,6 +122,6 @@ router.put("/:id", roleController.update);
  *       404:
  *         description: Role not found
  */
-router.delete("/:id", roleController.delete);
+router.delete('/:id', roleController.delete);
 
 export default router;

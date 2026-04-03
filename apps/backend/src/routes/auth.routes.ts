@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { authController } from "../controllers/auth.controller";
-import { authenticate } from "../middlewares/auth.middleware";
+import { Router } from 'express';
+import { authController } from '../controllers/auth.controller';
+import { authenticate } from '../middlewares/auth.middleware';
 
 const router: ReturnType<typeof Router> = Router();
 
@@ -42,7 +42,7 @@ const router: ReturnType<typeof Router> = Router();
  *       409:
  *         description: User already exists
  */
-router.post("/register", authController.register);
+router.post('/register', authController.register);
 
 /**
  * @swagger
@@ -78,7 +78,7 @@ router.post("/register", authController.register);
  *       401:
  *         description: Invalid credentials
  */
-router.post("/login", authController.login);
+router.post('/login', authController.login);
 
 /**
  * @swagger
@@ -94,7 +94,7 @@ router.post("/login", authController.login);
  *       401:
  *         description: Unauthorized
  */
-router.post("/logout", authenticate, authController.logout);
+router.post('/logout', authenticate, authController.logout);
 
 /**
  * @swagger
@@ -130,7 +130,7 @@ router.post("/logout", authenticate, authController.logout);
  *       401:
  *         description: Unauthorized
  */
-router.post("/refresh", authController.refresh);
+router.post('/refresh', authController.refresh);
 
 /**
  * @swagger
@@ -152,7 +152,7 @@ router.post("/refresh", authController.refresh);
  *       404:
  *         description: User not found
  */
-router.get("/verify-email", authController.verifyEmail);
+router.get('/verify-email', authController.verifyEmail);
 
 /**
  * @swagger
@@ -180,7 +180,7 @@ router.get("/verify-email", authController.verifyEmail);
  *       404:
  *         description: User not found
  */
-router.post("/resend-verification", authController.resendVerification);
+router.post('/resend-verification', authController.resendVerification);
 
 /**
  * @swagger
@@ -206,7 +206,7 @@ router.post("/resend-verification", authController.resendVerification);
  *       400:
  *         description: Validation error
  */
-router.post("/forgot-password", authController.forgotPassword);
+router.post('/forgot-password', authController.forgotPassword);
 
 /**
  * @swagger
@@ -237,7 +237,7 @@ router.post("/forgot-password", authController.forgotPassword);
  *       401:
  *         description: Invalid or expired token
  */
-router.post("/reset-password", authController.resetPassword);
+router.post('/reset-password', authController.resetPassword);
 
 /**
  * @swagger
@@ -259,7 +259,7 @@ router.post("/reset-password", authController.resetPassword);
  *       404:
  *         description: User not found
  */
-router.get("/me", authenticate, authController.me);
+router.get('/me', authenticate, authController.me);
 
 /**
  * @swagger
@@ -293,6 +293,6 @@ router.get("/me", authenticate, authController.me);
  *       401:
  *         description: Current password is incorrect
  */
-router.post("/change-password", authenticate, authController.changePassword);
+router.post('/change-password', authenticate, authController.changePassword);
 
 export default router;

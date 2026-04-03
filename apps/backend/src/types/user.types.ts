@@ -27,7 +27,7 @@ export interface TokenPayload {
 export interface AuthResponse {
   accessToken: string;
   refreshToken?: string;
-  user: Omit<User, "passwordHash">;
+  user: Omit<User, 'passwordHash'>;
 }
 
 export interface LoginRequest {

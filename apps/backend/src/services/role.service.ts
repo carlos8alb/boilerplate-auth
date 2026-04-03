@@ -1,6 +1,6 @@
-import { prisma } from "../config/prisma";
-import { CreateRoleInput } from "../schemas/role.schema";
-import { RoleName, Prisma } from "@prisma/client";
+import { prisma } from '../config/prisma';
+import { CreateRoleInput } from '../schemas/role.schema';
+import { RoleName, Prisma } from '@prisma/client';
 
 class RoleService {
   async findAll() {

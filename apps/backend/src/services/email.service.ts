@@ -1,5 +1,5 @@
-import { Resend } from "resend";
-import { config } from "../config/env";
+import { Resend } from 'resend';
+import { config } from '../config/env';
 
 const resend = config.resend.apiKey ? new Resend(config.resend.apiKey) : null;
 
@@ -20,7 +20,7 @@ class EmailService {
       const { to, subject, html } = options;
 
       await resend.emails.send({
-        from: "onboarding@resend.dev",
+        from: 'onboarding@resend.dev',
         to,
         subject,
         html,
@@ -34,11 +34,11 @@ class EmailService {
   }
 
   async sendVerificationEmail(email: string, token: string): Promise<boolean> {
-    const verificationUrl = `${process.env.FRONTEND_URL || "http://localhost:4200"}/auth/verify-email?token=${token}`;
+    const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:4200'}/auth/verify-email?token=${token}`;
 
     return this.sendEmail({
       to: email,
-      subject: "Verifica tu correo electrónico",
+      subject: 'Verifica tu correo electrónico',
       html: `
         <h1>Verifica tu correo electrónico</h1>
         <p>Haz clic en el siguiente enlace para verificar tu correo:</p>
@@ -49,11 +49,11 @@ class EmailService {
   }
 
   async sendPasswordResetEmail(email: string, token: string): Promise<boolean> {
-    const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:4200"}/auth/reset-password?token=${token}`;
+    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:4200'}/auth/reset-password?token=${token}`;
 
     return this.sendEmail({
       to: email,
-      subject: "Restablece tu contraseña",
+      subject: 'Restablece tu contraseña',
       html: `
         <h1>Restablece tu contraseña</h1>
         <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>

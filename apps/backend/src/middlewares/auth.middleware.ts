@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { jwtService } from "../services/jwt.service";
-import { TokenPayload } from "../types/user.types";
+import { Request, Response, NextFunction } from 'express';
+import { jwtService } from '../services/jwt.service';
+import { TokenPayload } from '../types/user.types';
 
 export interface AuthRequest extends Request {
   user?: TokenPayload;
@@ -13,8 +13,8 @@ export const authenticate = (
 ): void => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ message: "No token provided" });
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    res.status(401).json({ message: 'No token provided' });
     return;
   }
 
@@ -25,6 +25,6 @@ export const authenticate = (
     req.user = payload;
     next();
   } catch {
-    res.status(401).json({ message: "Invalid token" });
+    res.status(401).json({ message: 'Invalid token' });
   }
 };

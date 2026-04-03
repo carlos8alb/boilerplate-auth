@@ -19,11 +19,11 @@ export interface PaginatedResponse<T> {
 }
 
 export function encodeCursor(offset: number): string {
-  return Buffer.from(offset.toString()).toString("base64");
+  return Buffer.from(offset.toString()).toString('base64');
 }
 
 export function decodeCursor(cursor: string): number {
-  return parseInt(Buffer.from(cursor, "base64").toString("utf-8"), 10);
+  return parseInt(Buffer.from(cursor, 'base64').toString('utf-8'), 10);
 }
 
 export function getPaginationParams(
