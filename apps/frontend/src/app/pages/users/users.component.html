@@ -26,11 +26,36 @@
           <table class="table align-middle mb-0">
           <thead>
             <tr>
-              <th>Usuario</th>
-              <th>Email</th>
-              <th>Rol</th>
-              <th>Estado</th>
-              <th>Fecha</th>
+              <th class="sortable" (click)="sortByColumn('firstName')">
+                Usuario
+                @if (currentSortColumn === 'firstName') {
+                  <span class="sort-icon">{{ sortOrder === 'asc' ? '▲' : '▼' }}</span>
+                }
+              </th>
+              <th class="sortable" (click)="sortByColumn('email')">
+                Email
+                @if (currentSortColumn === 'email') {
+                  <span class="sort-icon">{{ sortOrder === 'asc' ? '▲' : '▼' }}</span>
+                }
+              </th>
+              <th class="sortable" (click)="sortByColumn('role')">
+                Rol
+                @if (currentSortColumn === 'role') {
+                  <span class="sort-icon">{{ sortOrder === 'asc' ? '▲' : '▼' }}</span>
+                }
+              </th>
+              <th class="sortable" (click)="sortByColumn('isEmailVerified')">
+                Estado
+                @if (currentSortColumn === 'isEmailVerified') {
+                  <span class="sort-icon">{{ sortOrder === 'asc' ? '▲' : '▼' }}</span>
+                }
+              </th>
+              <th class="sortable" (click)="sortByColumn('createdAt')">
+                Fecha
+                @if (currentSortColumn === 'createdAt') {
+                  <span class="sort-icon">{{ sortOrder === 'asc' ? '▲' : '▼' }}</span>
+                }
+              </th>
               <th class="text-end">Acciones</th>
             </tr>
           </thead>

@@ -28,8 +28,10 @@ class UserController {
         : 10;
       const search = (req.query.search as string) || undefined;
       const role = (req.query.role as string) || undefined;
+      const sortBy = (req.query.sortBy as string) || 'createdAt';
+      const sortOrder = ((req.query.sortOrder as string) || 'desc') as 'asc' | 'desc';
 
-      const result = await userService.findAllWithPagination(page, pageSize, search, role);
+      const result = await userService.findAllWithPagination(page, pageSize, search, role, sortBy, sortOrder);
 
       res.status(HTTP_STATUS.OK).json({
         success: true,

@@ -36,3 +36,27 @@
   font-weight: 600;
   font-size: 0.75rem;
 }
+
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .sort-icon {
+    margin-left: 0.25rem;
+    font-size: 0.7rem;
+    opacity: 0.7;
+  }
+
+  &.sorted {
+    .sort-icon {
+      opacity: 1;
+      color: var(--primary-color);
+    }
+  }
+}

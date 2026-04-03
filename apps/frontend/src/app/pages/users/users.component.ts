@@ -47,6 +47,9 @@ export class UsersComponent implements OnInit {
   });
 
   pageSizeOptions = [5, 10, 20, 50, 100];
+  sortBy = 'createdAt';
+  sortOrder: 'asc' | 'desc' = 'desc';
+  currentSortColumn = '';
 
   Math = Math;
 
@@ -60,6 +63,8 @@ export class UsersComponent implements OnInit {
     const params = new URLSearchParams();
     params.set('page', page.toString());
     params.set('pageSize', size.toString());
+    params.set('sortBy', this.sortBy);
+    params.set('sortOrder', this.sortOrder);
     if (this.searchTerm) params.set('search', this.searchTerm);
     if (this.roleFilter) params.set('role', this.roleFilter);
 
@@ -99,6 +104,17 @@ export class UsersComponent implements OnInit {
 
   changePage(page: number): void {
     this.loadUsers(page);
+  }
+
+  sortByColumn(column: string): void {
+    if (this.currentSortColumn === column) {
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.currentSortColumn = column;
+      this.sortOrder = 'asc';
+    }
+    this.sortBy = column;
+    this.loadUsers(1);
   }
 
   onPageSizeChange(size: number): void {

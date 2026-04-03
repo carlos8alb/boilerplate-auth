@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 import { prisma } from '../config/prisma';
 import { RoleName } from '@prisma/client';
 
@@ -282,7 +282,7 @@ class UserService {
     }
   }
 
-  async findAllWithPagination(page = 1, pageSize = 10, search?: string, roleName?: string) {
+  async findAllWithPagination(page = 1, pageSize = 10, search?: string, roleName?: string, sortBy = 'createdAt', sortOrder: 'asc' | 'desc' = 'desc') {
     try {
       const skip = (page - 1) * pageSize;
 
@@ -300,13 +300,34 @@ class UserService {
         where.role = { name: roleName as 'ADMIN' | 'USER' | 'MODERATOR' | 'GUEST' | 'CLIENT' | 'COMPANY' };
       }
 
+      const orderByField: Record<string, unknown> = {};
+
+      switch (sortBy) {
+        case 'role':
+          orderByField.role = { name: sortOrder };
+          break;
+        case 'firstName':
+          orderByField.firstName = sortOrder;
+          break;
+        case 'email':
+          orderByField.email = sortOrder;
+          break;
+        case 'isEmailVerified':
+          orderByField.isEmailVerified = sortOrder;
+          break;
+        case 'createdAt':
+        default:
+          orderByField.createdAt = sortOrder;
+          break;
+      }
+
       const [users, total] = await Promise.all([
         prisma.user.findMany({
           where,
           include: { role: true },
           skip,
           take: pageSize,
-          orderBy: { createdAt: 'desc' },
+          orderBy: orderByField,
         }),
         prisma.user.count({ where }),
       ]);
