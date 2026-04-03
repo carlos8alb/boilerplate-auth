@@ -14,9 +14,9 @@
       <div class="filters">
         <select class="form-select" [(ngModel)]="roleFilter" (change)="filterUsers()">
           <option value="">Todos los roles</option>
-          <option value="ADMIN">Admin</option>
-          <option value="USER">Usuario</option>
-          <option value="MODERATOR">Moderador</option>
+          @for (role of roles(); track role.id) {
+            <option [value]="role.name">{{ role.displayName || role.name }}</option>
+          }
         </select>
       </div>
     </div>
@@ -45,7 +45,7 @@
                 </td>
                 <td>{{ user.email }}</td>
                 <td>
-                  <span class="badge" [class]="getRoleBadgeClass(user?.role?.name)">{{ user?.role?.name }}</span>
+                  <span class="badge" [class]="getRoleBadgeClass(user?.role?.name)">{{ user?.role?.displayName || user?.role?.name }}</span>
                 </td>
                 <td>
                   @if (user.isEmailVerified) {
@@ -150,7 +150,7 @@
                 <select class="form-select" formControlName="roleId">
                   <option value="">Seleccionar rol</option>
                   @for (role of roles(); track role.id) {
-                    <option [value]="role.id">{{ role.name }}</option>
+                    <option [value]="role.id">{{ role.displayName || role.name }}</option>
                   }
                 </select>
               </div>
