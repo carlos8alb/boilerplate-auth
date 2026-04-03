@@ -1,7 +1,11 @@
-import { Resend } from 'resend';
+import { MailtrapClient } from 'mailtrap';
 import { config } from '../config/env';
 
-const resend = config.resend.apiKey ? new Resend(config.resend.apiKey) : null;
+const client = config.mailtrap.token
+  ? new MailtrapClient({
+      token: config.mailtrap.token,
+    })
+  : null;
 
 export interface EmailOptions {
   to: string;
@@ -11,17 +15,20 @@ export interface EmailOptions {
 
 class EmailService {
   async sendEmail(options: EmailOptions): Promise<boolean> {
-    if (!resend) {
-      console.warn('Resend API key not configured. Email not sent.');
+    if (!client) {
+      console.warn('MAILTRAP_TOKEN not configured. Email not sent.');
       return false;
     }
 
-    try {
-      const { to, subject, html } = options;
+    const { to, subject, html } = options;
 
-      await resend.emails.send({
-        from: 'onboarding@resend.dev',
-        to,
+    try {
+      await client.send({
+        from: {
+          name: 'Boilerplate Auth',
+          email: 'noreply@demomailtrap.co',
+        },
+        to: [{ email: to }],
         subject,
         html,
       });
@@ -34,7 +41,7 @@ class EmailService {
   }
 
   async sendVerificationEmail(email: string, token: string): Promise<boolean> {
-    const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:4200'}/auth/verify-email?token=${token}`;
+    const verificationUrl = `${config.clientUrl}/auth/verify-email?token=${token}`;
 
     return this.sendEmail({
       to: email,
@@ -49,7 +56,7 @@ class EmailService {
   }
 
   async sendPasswordResetEmail(email: string, token: string): Promise<boolean> {
-    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:4200'}/auth/reset-password?token=${token}`;
+    const resetUrl = `${config.clientUrl}/auth/reset-password?token=${token}`;
 
     return this.sendEmail({
       to: email,

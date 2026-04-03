@@ -9,8 +9,8 @@ export const config = {
     refreshSecret: process.env.JWT_REFRESH_SECRET || 'your-refresh-secret',
     refreshExpiresIn: process.env.JWT_REFRESH_EXPIRY || '7d',
   },
-  resend: {
-    apiKey: process.env.RESEND_API_KEY || '',
+  mailtrap: {
+    token: process.env.MAILTRAP_TOKEN || '',
   },
   port: parseInt(process.env.PORT || '3000', 10),
   nodeEnv: process.env.NODE_ENV || 'development',

@@ -23,6 +23,7 @@ npm run build            # tsc
 npm start                # production
 npm run lint             # ESLint
 npm run lint:fix         # Auto-fix
+npm run format           # Prettier
 npm run typecheck        # TSC check
 npm test                 # Jest
 npm run test:watch       # Watch mode
@@ -166,7 +167,7 @@ JWT_REFRESH_EXPIRY=7d
 DATABASE_URL=
 PORT=3000
 NODE_ENV=development
-RESEND_API_KEY=
+MAILTRAP_TOKEN=
 ```
 
 ---
