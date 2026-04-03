@@ -19,7 +19,6 @@ export class UsersComponent implements OnInit {
   private authService = inject(AuthService);
 
   users = signal<User[]>([]);
-  filteredUsers = signal<User[]>([]);
   roles = signal<Role[]>([]);
   searchTerm = '';
   roleFilter = '';
@@ -40,12 +39,14 @@ export class UsersComponent implements OnInit {
 
   pagination = signal({
     page: 1,
-    pageSize: 20,
+    pageSize: 10,
     total: 0,
     pages: 0,
     hasNextPage: false,
     hasPreviousPage: false
   });
+
+  pageSizeOptions = [5, 10, 20, 50, 100];
 
   Math = Math;
 
@@ -54,21 +55,30 @@ export class UsersComponent implements OnInit {
     this.loadRoles();
   }
 
-  loadUsers(page = 1): void {
-    this.http.get<any>(`${API_URL}/users?page=${page}&pageSize=20`).subscribe({
+  loadUsers(page = 1, pageSize?: number): void {
+    const size = pageSize || this.pagination().pageSize;
+    const params = new URLSearchParams();
+    params.set('page', page.toString());
+    params.set('pageSize', size.toString());
+    if (this.searchTerm) params.set('search', this.searchTerm);
+    if (this.roleFilter) params.set('role', this.roleFilter);
+
+    this.http.get<any>(`${API_URL}/users?${params}`).subscribe({
       next: (res) => {
-        this.users.set(res.data || []);
-        this.filterUsers();
-        if (res.pagination) {
-          this.pagination.set({
-            page: res.pagination.page,
-            pageSize: res.pagination.pageSize,
-            total: res.pagination.total,
-            pages: res.pagination.pages,
-            hasNextPage: res.pagination.page < res.pagination.pages,
-            hasPreviousPage: res.pagination.page > 1
-          });
-        }
+        const data = res.data || [];
+        this.users.set(data);
+        const paginationData = res.pagination;
+        const total = paginationData?.total ?? data.length;
+        const pages = paginationData?.pages ?? 1;
+        const pageSize = paginationData?.pageSize ?? size;
+        this.pagination.set({
+          page: paginationData?.page ?? page,
+          pageSize,
+          total,
+          pages,
+          hasNextPage: page < pages,
+          hasPreviousPage: page > 1
+        });
       },
       error: (err) => console.error('Error loading users:', err)
     });
@@ -84,26 +94,21 @@ export class UsersComponent implements OnInit {
   }
 
   filterUsers(): void {
-    const currentUserId = this.authService.currentUser()?.id;
-    let filtered = this.users().filter(u => u.id !== currentUserId);
-
-    if (this.searchTerm) {
-      const term = this.searchTerm.toLowerCase();
-      filtered = filtered.filter(u =>
-        u.email.toLowerCase().includes(term) ||
-        u.fullName?.toLowerCase().includes(term)
-      );
-    }
-
-    if (this.roleFilter) {
-      filtered = filtered.filter(u => u.role?.name === this.roleFilter);
-    }
-
-    this.filteredUsers.set(filtered);
+    this.loadUsers(1);
   }
 
   changePage(page: number): void {
     this.loadUsers(page);
+  }
+
+  onPageSizeChange(size: number): void {
+    this.pagination.update(p => ({ ...p, pageSize: size, page: 1 }));
+    this.loadUsers(1, size);
+  }
+
+  onPageSizeChangeFromEvent(event: Event): void {
+    const size = parseInt((event.target as HTMLSelectElement).value, 10);
+    this.onPageSizeChange(size);
   }
 
   getInitials(user: User): string {
@@ -114,9 +119,15 @@ export class UsersComponent implements OnInit {
   }
 
   getRoleBadgeClass(role?: string): string {
-    if (role === 'ADMIN') return 'bg-danger';
-    if (role === 'MODERATOR') return 'bg-warning';
-    return 'bg-primary';
+    const colors: Record<string, string> = {
+      ADMIN: 'bg-danger',
+      MODERATOR: 'bg-warning',
+      USER: 'bg-primary',
+      CLIENT: 'bg-success',
+      COMPANY: 'bg-info',
+      GUEST: 'bg-secondary',
+    };
+    return colors[role || ''] || 'bg-primary';
   }
 
   formatDate(date?: string): string {

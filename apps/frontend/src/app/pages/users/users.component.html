@@ -35,7 +35,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (user of filteredUsers(); track user.id) {
+            @for (user of users(); track user.id) {
               <tr>
                 <td>
                   <div class="d-flex align-items-center gap-2">
@@ -85,28 +85,39 @@
       </div>
     </div>
 
-    @if (pagination().pages > 1) {
+    @if (pagination().pages >= 1) {
       <div class="card-footer d-flex justify-content-between align-items-center">
-        <span class="text-muted">
-          Mostrando {{ (pagination().page - 1) * pagination().pageSize + 1 }} -
-          {{ Math.min(pagination().page * pagination().pageSize, pagination().total) }}
-          de {{ pagination().total }} usuarios
-        </span>
-        <nav>
-          <ul class="pagination mb-0">
-            <li class="page-item" [class.disabled]="pagination().page === 1">
-              <button class="page-link" (click)="changePage(pagination().page - 1)">Anterior</button>
-            </li>
-            @for (p of [].constructor(pagination().pages); track $index) {
-              <li class="page-item" [class.active]="pagination().page === $index + 1">
-                <button class="page-link" (click)="changePage($index + 1)">{{ $index + 1 }}</button>
-              </li>
+        <div class="d-flex align-items-center gap-2">
+          <span class="text-muted">Mostrando</span>
+          <select class="form-select form-select-sm" style="width: auto;" (change)="onPageSizeChangeFromEvent($event)">
+            @for (size of pageSizeOptions; track size) {
+              <option [value]="size" [selected]="size === pagination().pageSize">{{ size }}</option>
             }
-            <li class="page-item" [class.disabled]="pagination().page === pagination().pages">
-              <button class="page-link" (click)="changePage(pagination().page + 1)">Siguiente</button>
-            </li>
-          </ul>
-        </nav>
+          </select>
+          <span class="text-muted">filas</span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <span class="text-muted">
+            {{ (pagination().page - 1) * pagination().pageSize + 1 }} -
+            {{ Math.min(pagination().page * pagination().pageSize, pagination().total) }}
+            de {{ pagination().total }} usuarios
+          </span>
+          <nav>
+            <ul class="pagination pagination-sm mb-0">
+              <li class="page-item" [class.disabled]="pagination().page === 1">
+                <button class="page-link" (click)="changePage(pagination().page - 1)">Anterior</button>
+              </li>
+              @for (p of [].constructor(pagination().pages); track $index) {
+                <li class="page-item" [class.active]="pagination().page === $index + 1">
+                  <button class="page-link" (click)="changePage($index + 1)">{{ $index + 1 }}</button>
+                </li>
+              }
+              <li class="page-item" [class.disabled]="pagination().page === pagination().pages">
+                <button class="page-link" (click)="changePage(pagination().page + 1)">Siguiente</button>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     }
   </div>

@@ -21,9 +21,27 @@ class UserController {
         return;
       }
 
-      const users = await userService.findAll();
+      const page = parseInt(req.query.page as string) || 1;
+      const pageSizeParam = req.query.pageSize as string;
+      const pageSize = pageSizeParam 
+        ? Math.min(100, Math.max(1, parseInt(pageSizeParam)))
+        : 10;
+      const search = (req.query.search as string) || undefined;
+      const role = (req.query.role as string) || undefined;
 
-      res.status(HTTP_STATUS.OK).json(successResponse(users));
+      const result = await userService.findAllWithPagination(page, pageSize, search, role);
+
+      res.status(HTTP_STATUS.OK).json({
+        success: true,
+        data: result.data,
+        pagination: {
+          total: result.total,
+          page: result.page,
+          pageSize: result.pageSize,
+          pages: result.pages,
+        },
+        timestamp: new Date().toISOString(),
+      });
     } catch {
       res
         .status(HTTP_STATUS.INTERNAL_ERROR)
