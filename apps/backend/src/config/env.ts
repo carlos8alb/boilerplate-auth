@@ -9,8 +9,14 @@ export const config = {
     refreshSecret: process.env.JWT_REFRESH_SECRET || 'your-refresh-secret',
     refreshExpiresIn: process.env.JWT_REFRESH_EXPIRY || '7d',
   },
-  mailtrap: {
-    token: process.env.MAILTRAP_TOKEN || '',
+  ethereal: {
+    host: process.env.SMTP_HOST || 'smtp.ethereal.email',
+    port: parseInt(process.env.SMTP_PORT || '587', 10),
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER || 'eli.morar78@ethereal.email',
+      pass: process.env.SMTP_PASS || '5bWH5bAywmdmp9ZFQH',
+    },
   },
   port: parseInt(process.env.PORT || '3000', 10),
   nodeEnv: process.env.NODE_ENV || 'development',

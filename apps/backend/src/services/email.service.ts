@@ -1,9 +1,15 @@
-import { MailtrapClient } from 'mailtrap';
+import nodemailer from 'nodemailer';
 import { config } from '../config/env';
 
-const client = config.mailtrap.token
-  ? new MailtrapClient({
-      token: config.mailtrap.token,
+const transporter = config.ethereal.auth.user
+  ? nodemailer.createTransport({
+      host: config.ethereal.host,
+      port: config.ethereal.port,
+      secure: config.ethereal.secure,
+      auth: {
+        user: config.ethereal.auth.user,
+        pass: config.ethereal.auth.pass,
+      },
     })
   : null;
 
@@ -15,24 +21,23 @@ export interface EmailOptions {
 
 class EmailService {
   async sendEmail(options: EmailOptions): Promise<boolean> {
-    if (!client) {
-      console.warn('MAILTRAP_TOKEN not configured. Email not sent.');
+    if (!transporter) {
+      console.warn('SMTP not configured. Email not sent.');
       return false;
     }
 
     const { to, subject, html } = options;
 
     try {
-      await client.send({
-        from: {
-          name: 'Boilerplate Auth',
-          email: 'noreply@demomailtrap.co',
-        },
-        to: [{ email: to }],
+      const info = await transporter.sendMail({
+        from: '"Boilerplate Auth" <noreply@boilerplate.com>',
+        to,
         subject,
         html,
       });
 
+      console.log('Email sent:', info.messageId);
+      console.log('Preview URL:', nodemailer.getTestMessageUrl(info));
       return true;
     } catch (error) {
       console.error('Error sending email:', error);
