@@ -1,28 +1,32 @@
 import 'dotenv/config'
-import { PrismaClient, RoleName } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const roles: { name: RoleName; description: string }[] = [
+const roles: { name: 'ADMINISTRADOR' | 'USUARIO' | 'MODERADOR' | 'INVITADO' | 'CLIENTE' | 'EMPRESA'; description: string }[] = [
   {
-    name: RoleName.ADMIN,
+    name: 'ADMINISTRADOR',
     description: 'Administrador con acceso completo a todas las funcionalidades'
   },
   {
-    name: RoleName.USER,
+    name: 'USUARIO',
     description: 'Usuario regular con acceso básico'
   },
   {
-    name: RoleName.MODERATOR,
+    name: 'MODERADOR',
     description: 'Moderador con permisos de gestión'
   },
   {
-    name: RoleName.GUEST,
+    name: 'INVITADO',
     description: 'Invitado con acceso limitado'
   },
   {
-    name: RoleName.CLIENT,
+    name: 'CLIENTE',
     description: 'Cliente con acceso a funcionalidades específicas'
+  },
+  {
+    name: 'EMPRESA',
+    description: 'Empresa con acceso a funcionalidades específicas'
   }
 ]
 
